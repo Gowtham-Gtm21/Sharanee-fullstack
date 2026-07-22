@@ -5,7 +5,7 @@
    ============================================================ */
 
 /* ---- Prevent any accidental horizontal overflow globally ---- */
-html, body { overflow-x: hidden; }
+html, body { overflow-x: clip; }
 img, svg, video { max-width: 100%; }
 
 /* ---- Fluid typography (scales smoothly between phone and desktop) ---- */
