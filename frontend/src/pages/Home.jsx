@@ -10,9 +10,9 @@ const HERO =
 const CAT_FALLBACK = [
   { name: "Saree Inskirt", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/Saree_f21a0b8d-af7e-4925-aa0c-6795f26f90d3.webp?v=1775470531" },
   { name: "Designer Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/lehnga_Set.webp?v=1773202620" },
-  { name: "Indo Western", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/indo_western.webp?v=1773202846" },
-  { name: "Traditional Gown", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/gown.webp?v=1773202521" },
-  { name: "Kurta Set", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/Suit_Set.webp?v=1773202954" },
+  { name: "Cotton Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/indo_western.webp?v=1773202846" },
+  { name: "Bridal Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/gown.webp?v=1773202521" },
+  { name: "Silk Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/Suit_Set.webp?v=1773202954" },
 ];
 const SPLIT1 = "https://ps-vastra.myshopify.com/cdn/shop/files/banner-2.webp?crop=center&height=519&v=1773204920&width=832";
 const SPLIT2 = "https://ps-vastra.myshopify.com/cdn/shop/files/3.webp?crop=center&height=642&v=1773206251&width=496";

@@ -60,8 +60,8 @@ export default function Footer() {
             <Link to="/shop">Saree Inskirt</Link>
             <Link to="/shop"> Designer Sarees</Link>
             <Link to="/shop">Fusion Wear</Link>
-            <Link to="/shop">Traditional Gown</Link>
-            <Link to="/shop">Kurta Set</Link>
+            <Link to="/shop">Cotton Sarees</Link>
+            <Link to="/shop">Silk Sarees</Link>
           </div>
 
           <div className="foot-col">

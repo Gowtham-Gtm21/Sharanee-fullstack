@@ -42,7 +42,7 @@ export const BLOGS = [
     excerpt: "Beyond the wedding day — how to curate a trousseau you'll reach for years later.",
     body: [
       "The best trousseaus aren't the largest; they're the most considered. Begin with anchor pieces you'll re-wear: a heritage silk saree, Designer Sarees, and a fusion set that travels from mehndi to reception.",
-      "Balance statement embroidery with quieter, re-styleable pieces. A richly worked Designer Sarees deserves the spotlight once; a well-cut kurta set earns its place season after season.",
+      "Balance statement embroidery with quieter, re-styleable pieces. A richly worked Designer Sarees deserves the spotlight once; a well-cut Designer Sarees earns its place season after season.",
       "Think in palettes, not single colours. Jewel tones photograph beautifully and mix effortlessly across the wedding week.",
     ],
   },
@@ -76,7 +76,7 @@ export const BLOGS = [
   },
   {
     slug: "fusion-wear-styling",
-    title: "Styling Indo-Western Fusion Wear",
+    title: "Styling Cotton Sarees Fusion Wear",
     category: "Occasion Wear",
     date: "April 15, 2026",
     author: "Sharanee Studio",
