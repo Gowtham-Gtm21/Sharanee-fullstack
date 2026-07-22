@@ -103,11 +103,12 @@ const prepareProductBody = (requestBody) => {
 };
 
 const filesToPaths = (files = []) =>
-  files.map((file) => `uploads/products/${file.filename}`);
+  files.map((file) => file.path);
 
-// Helper to delete uploaded image files
+// Helper to delete uploaded image files (local only — Cloudinary URLs are skipped)
 const deleteImageFiles = (images = []) => {
   images.forEach((image) => {
+    if (!image || image.startsWith("http")) return; // hosted on Cloudinary — skip
     const filePath = path.join(__dirname, "..", image);
 
     fs.unlink(filePath, (error) => {

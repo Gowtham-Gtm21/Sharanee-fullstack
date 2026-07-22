@@ -1,17 +1,19 @@
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-// Builds a multer instance that stores files under uploads/<folder>/
+// Builds a multer instance that stores uploads in Cloudinary under
+// sharanee/<folder>/. With CloudinaryStorage, file.path is the hosted
+// image URL (https://res.cloudinary.com/...) and file.filename is the
+// Cloudinary public_id.
 const makeUploader = (folder) => {
-  const dest = path.join(__dirname, "..", "uploads", folder);
-  fs.mkdirSync(dest, { recursive: true });
-
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, dest),
-    filename: (req, file, cb) => {
-      const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-      cb(null, `${unique}${path.extname(file.originalname)}`);
+  const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder: `sharanee/${folder}`,
+      allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
+      transformation: [{ width: 1200, height: 1600, crop: "limit" }],
     },
   });
 
@@ -25,4 +27,7 @@ const makeUploader = (folder) => {
   return multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
 };
 
-module.exports = { productUpload: makeUploader("products"), categoryUpload: makeUploader("categories") };
+module.exports = {
+  productUpload: makeUploader("products"),
+  categoryUpload: makeUploader("categories"),
+};

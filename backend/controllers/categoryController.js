@@ -32,7 +32,7 @@ const createCategory = asyncHandler(async (req, res) => {
   }
 
   const categoryImage = req.file
-    ? `uploads/categories/${req.file.filename}`
+    ? req.file.path
     : "";
 
   const category = await Category.create({
@@ -60,7 +60,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 
   if (req.file) {
     const oldImage = category.categoryImage;
-    category.categoryImage = `uploads/categories/${req.file.filename}`;
+    category.categoryImage = req.file.path;
 
     await category.save();
 
