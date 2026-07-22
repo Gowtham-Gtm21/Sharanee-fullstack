@@ -42,7 +42,7 @@
 .admin-side .logo {
   text-align: center;
   padding-bottom: 22px;
-  border-bottom: 1px solid rgba(231, 214, 172, 0.2);
+  border-bottom: 1px solid rgba(230, 207, 163, 0.2);
   margin-bottom: 16px;
 }
 
@@ -58,8 +58,8 @@
   border-radius: 50%;
   border: 4px solid var(--gold-pale);
   box-shadow:
-    0 0 0 3px rgba(231, 214, 172, 0.18),
-    0 8px 20px rgba(0, 0, 0, 0.18);
+    0 0 0 3px rgba(230, 207, 163, 0.18),
+    0 8px 20px rgba(74, 44, 26, 0.18);
   filter: none;
 }
 
@@ -85,14 +85,14 @@
 
 .admin-nav a:hover,
 .admin-nav a.active {
-  background: rgba(231, 214, 172, 0.14);
-  color: #fff;
+  background: rgba(230, 207, 163, 0.14);
+  color: #FBF6EC;
 }
 
 .admin-side .out {
   margin-top: auto;
   background: none;
-  border: 1px solid rgba(231, 214, 172, 0.3);
+  border: 1px solid rgba(230, 207, 163, 0.3);
   color: var(--gold-pale);
   padding: 10px;
 }
@@ -176,7 +176,7 @@
 .admin-table select {
   padding: 6px 10px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: #FBF6EC;
 }
 
 .tag {
@@ -191,7 +191,7 @@
   padding: 6px 12px;
   font-size: 0.76rem;
   border: 1px solid var(--line);
-  background: #fff;
+  background: #FBF6EC;
   color: var(--cocoa);
   margin-right: 6px;
 }
@@ -203,7 +203,7 @@
 
 .mini-btn:hover {
   background: var(--cocoa);
-  color: #fff;
+  color: #FBF6EC;
 }
 
 .icon-btn {
@@ -213,7 +213,7 @@
   width: 32px;
   height: 32px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: #FBF6EC;
   color: var(--cocoa);
   margin-right: 6px;
   cursor: pointer;
@@ -223,7 +223,7 @@
 
 .icon-btn:hover {
   background: var(--cocoa);
-  color: #fff;
+  color: #FBF6EC;
   border-color: var(--cocoa);
 }
 
@@ -234,7 +234,7 @@
 
 .icon-btn.danger:hover {
   background: var(--danger);
-  color: #fff;
+  color: #FBF6EC;
   border-color: var(--danger);
 }
 
@@ -269,7 +269,7 @@
   border-radius: 50%;
   border: none;
   background: var(--danger);
-  color: #fff;
+  color: #FBF6EC;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -310,7 +310,7 @@
 .modal-back {
   position: fixed;
   inset: 0;
-  background: rgba(44, 28, 18, 0.55);
+  background: rgba(74, 44, 26, 0.55);
   z-index: 500;
   display: grid;
   place-items: center;
@@ -369,7 +369,7 @@
     transition: transform 0.28s ease;
     width: 270px;
     max-width: 82vw;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 40px rgba(74, 44, 26, 0.4);
   }
 
   .admin-side.open {
@@ -397,7 +397,7 @@
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(44, 28, 18, 0.55);
+    background: rgba(74, 44, 26, 0.55);
     z-index: 290;
   }
 

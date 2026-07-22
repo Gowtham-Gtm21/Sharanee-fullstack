@@ -66,19 +66,18 @@ export default function Home() {
         </defs>
       </svg>
       {/* HERO */}
-      <section className="hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(63,35,23,0.55), rgba(63,35,23,0.1)), url(${HERO})` }}>
-        <div className="container">
-          <div className="hero-inner">
-            <span className="eyebrow" style={{ color: "var(--gold-pale)" }}>
-              Crafted for Every Celebration
-            </span>
-            <h1>Crafted for Modern Royalty</h1>
-            <p>Timeless designs rooted in tradition, crafted for every celebration.</p>
-            <Link to="/shop" className="btn btn-gold">
-              Explore <Icon.Arrow />
-            </Link>
-          </div>
+      <section className="hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(74,44,26,0.55), rgba(74,44,26,0.1)), url(${HERO})` }}>        <div className="container">
+        <div className="hero-inner">
+          <span className="eyebrow" style={{ color: "var(--gold-pale)" }}>
+            Crafted for Every Celebration
+          </span>
+          <h1>Crafted for Modern Royalty</h1>
+          <p>Timeless designs rooted in tradition, crafted for every celebration.</p>
+          <Link to="/shop" className="btn btn-gold">
+            Explore <Icon.Arrow />
+          </Link>
         </div>
+      </div>
       </section>
 
       <div className="container">

@@ -33,11 +33,11 @@
 .acct-menu a { padding: 9px 6px; font-size: 0.88rem; color: var(--cocoa-soft); }
 .acct-menu a:hover { color: var(--gold); }
 .acct-out { margin-top: 6px; background: none; border: 1px solid var(--line); color: var(--danger); padding: 9px; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.06em; }
-.acct-out:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+.acct-out:hover { background: var(--danger); color: #FBF6EC; border-color: var(--danger); }
 
 /* Sign In button: center text + white on hover */
 .acct-menu .btn-block { justify-content: center; text-align: center; }
-.acct-menu .btn-gold:hover { color: #fff !important; }
+.acct-menu .btn-gold:hover { color: #FBF6EC !important; }
 
 /* Create an account: centered */
 .acct-reg { display: block; text-align: center; margin-top: 10px; font-size: 0.85rem; color: var(--gold) !important; }
@@ -47,7 +47,7 @@
 @media (max-width: 940px) { .cart-txt { display: none; } }
 
 /* ---------- Search overlay ---------- */
-.search-overlay { position: fixed; inset: 0; background: rgba(44,28,18,0.55); backdrop-filter: blur(4px); z-index: 500; display: flex; justify-content: center; align-items: flex-start; padding: 12vh 20px 20px; animation: fade 0.2s ease; }
+.search-overlay { position: fixed; inset: 0; background: rgba(74,44,26,0.55); backdrop-filter: blur(4px); z-index: 500; display: flex; justify-content: center; align-items: flex-start; padding: 12vh 20px 20px; animation: fade 0.2s ease; }
 @keyframes fade { from { opacity: 0; } }
 .search-x { position: fixed; top: 22px; right: 26px; background: none; border: none; color: var(--ivory); cursor: pointer; }
 .search-panel { width: 100%; max-width: 640px; background: var(--ivory); box-shadow: var(--shadow); padding: 34px; animation: rise 0.25s ease; }
@@ -182,7 +182,7 @@
 /* ---------- Auth split layout ---------- */
 .auth-split { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 40px); }
 .auth-visual { background: linear-gradient(160deg, var(--cocoa), var(--cocoa-soft)); display: flex; align-items: center; padding: 60px; position: relative; overflow: hidden; }
-.auth-visual::after { content: "✳"; position: absolute; bottom: -30px; right: -10px; font-size: 220px; color: rgba(231,214,172,0.12); }
+.auth-visual::after { content: "✳"; position: absolute; bottom: -30px; right: -10px; font-size: 220px; color: rgba(230,207,163,0.12); }
 .auth-visual-in { position: relative; z-index: 2; max-width: 380px; }
 .auth-visual-in h2 { color: var(--ivory); font-size: 2.6rem; line-height: 1.1; }
 .auth-visual-in p { color: var(--gold-pale); margin-top: 14px; }
@@ -235,8 +235,8 @@
    WISHLIST TOGGLE + TOUCH ACTIONS
    ============================================================ */
 /* Filled red heart when a product is in the wishlist */
-.pcard-actions button.wished { color: #d64545; }
-.pcard-actions button.wished:hover { background: #d64545; color: #fff; }
+.pcard-actions button.wished { color: #C9A46A; }
+.pcard-actions button.wished:hover { background: #C9A46A; color: #FBF6EC; }
 
 /* On touch devices there is no hover — always show card actions */
 @media (hover: none) {

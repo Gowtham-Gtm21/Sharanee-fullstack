@@ -7,21 +7,28 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap");
 
 :root {
-  /* Palette */
-  --cream: #f7f1e6;
-  --cream-deep: #efe6d5;
-  --ivory: #fdfaf3;
-  --cocoa: #3f2317;      /* deep brown from the wordmark */
-  --cocoa-soft: #5a3826;
-  --gold: #b78d3f;       /* the tagline gold */
-  --gold-soft: #c9a75c;
-  --gold-pale: #e7d6ac;
-  --rose: #a86b62;
-  --ink: #2c1c12;
-  --muted: #8a7a68;
-  --line: #e2d6c0;
-  --danger: #b23b3b;
-  --success: #4f7a4a;
+  /* ===== Brand palette (5 colors) ===== */
+  --deep-brown: #4A2C1A;   /* Primary  — text, headings, monogram */
+  --warm-gold:  #C9A46A;   /* Primary  — borders, highlights, accents */
+  --soft-beige: #F5EBDD;   /* Secondary — background */
+  --light-gold: #E6CFA3;   /* Secondary — subtle fills, gradients */
+  --champagne:  #D8B980;   /* Accent   — luxury tags, festive */
+
+  /* ===== Semantic tokens (mapped to the 5 brand colors) ===== */
+  --cream: #F5EBDD;        /* page background = Soft Beige */
+  --cream-deep: #E6CFA3;   /* media / deeper surfaces = Light Gold Tint */
+  --ivory: #FBF6EC;        /* cards / panels = light tint of Soft Beige */
+  --cocoa: #4A2C1A;        /* headings, dark UI = Deep Brown */
+  --cocoa-soft: #6E4B34;   /* body / secondary text (soft brown) */
+  --gold: #C9A46A;         /* primary accent = Warm Gold */
+  --gold-soft: #D8B980;    /* = Muted Champagne */
+  --gold-pale: #E6CFA3;    /* = Light Gold Tint */
+  --rose: #C9A46A;         /* (no rose in palette) = Warm Gold */
+  --ink: #4A2C1A;          /* strongest text = Deep Brown */
+  --muted: #9C8467;        /* muted labels (brown-beige) */
+  --line: #E6CFA3;         /* borders = Light Gold Tint */
+  --danger: #4A2C1A;       /* on-brand (Deep Brown) */
+  --success: #C9A46A;      /* on-brand (Warm Gold) */
 
   /* Type */
   --display: "Cormorant Garamond", Georgia, serif;
@@ -29,7 +36,7 @@
 
   --maxw: 1240px;
   --radius: 2px;
-  --shadow: 0 12px 40px -18px rgba(63, 35, 23, 0.35);
+  --shadow: 0 12px 40px -18px rgba(74, 44, 26, 0.35);
 }
 
 * { box-sizing: border-box; }
@@ -91,7 +98,7 @@ input, select, textarea {
 .btn:hover { background: var(--cocoa-soft); }
 .btn:active { transform: translateY(1px); }
 
-.btn-gold { background: var(--gold); color: #fff; }
+.btn-gold { background: var(--gold); color: #FBF6EC; }
 .btn-gold:hover { background: var(--gold-soft); }
 
 .btn-outline {

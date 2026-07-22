@@ -16,7 +16,7 @@
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(253, 250, 243, 0.92);
+  background: rgba(251, 246, 236, 0.92);
   color: var(--danger);
   padding: 8px 22px;
   letter-spacing: 0.12em;
@@ -112,7 +112,7 @@
 }
 .icon-count {
   position: absolute; top: -8px; right: -9px;
-  background: var(--gold); color: #fff;
+  background: var(--gold); color: #FBF6EC;
   font-size: 0.62rem; width: 16px; height: 16px;
   border-radius: 50%; display: grid; place-items: center;
   font-family: var(--body);
@@ -132,7 +132,7 @@
 
 /* Mobile drawer */
 .drawer-back {
-  position: fixed; inset: 0; background: rgba(44,28,18,0.5); z-index: 200;
+  position: fixed; inset: 0; background: rgba(74,44,26,0.5); z-index: 200;
 }
 .drawer {
   position: fixed; top: 0; left: 0; bottom: 0; width: 78%; max-width: 320px;
@@ -198,7 +198,7 @@
   position: relative; min-height: 620px;
   display: flex; align-items: center;
   background:
-    linear-gradient(90deg, rgba(63,35,23,0.35), rgba(63,35,23,0.05)),
+    linear-gradient(90deg, rgba(74,44,26,0.35), rgba(74,44,26,0.05)),
     var(--cream-deep);
   background-size: cover; background-position:0% 30%; background-repeat: no-repeat;
   overflow: hidden;
@@ -206,10 +206,10 @@
 .hero-inner { position: relative; z-index: 2; max-width: 560px; padding: 60px 0; }
 .hero .eyebrow { margin-bottom: 16px; display: block; }
 .hero h1 {
-  font-size: 4.6rem; line-height: 0.98; color: #fff;
-  text-shadow: 0 2px 30px rgba(44,28,18,0.4);
+  font-size: 4.6rem; line-height: 0.98; color: #FBF6EC;
+  text-shadow: 0 2px 30px rgba(74,44,26,0.4);
 }
-.hero p { color: #f3ece0; font-size: 1.05rem; max-width: 400px; margin: 18px 0 30px; }
+.hero p { color: #EFE4D3; font-size: 1.05rem; max-width: 400px; margin: 18px 0 30px; }
 @media (max-width: 760px) { .hero h1 { font-size: 3rem; } .hero { min-height: 480px; } }
 
 .feature-row {
@@ -232,7 +232,7 @@
 .cat-tile { position: relative; display: block; aspect-ratio: 3/4.3; text-decoration: none; }
 .cat-arch-frame {
   width: 100%; height: 100%;
-  background: linear-gradient(160deg, #cba15a, #e7d6ac 45%, #cba15a);
+  background: linear-gradient(160deg, #C9A46A, #E6CFA3 45%, #C9A46A);
   clip-path: url(#catArch);
   padding: 3px;
 }
@@ -246,7 +246,7 @@
 .cat-tile:hover .cat-arch-inner img { transform: scale(1.06); }
 .cat-tile span {
   position: absolute; left: 14px; bottom: 16px; right: 14px;
-  background: rgba(253,250,243,0.88); color: var(--cocoa);
+  background: rgba(251,246,236,0.88); color: var(--cocoa);
   text-align: center; padding: 9px; font-size: 0.82rem;
   letter-spacing: 0.08em;
 }
@@ -358,8 +358,8 @@
 .order-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 14px; }
 .order-head small { color: var(--muted); }
 .status-pill { padding: 5px 14px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; background: var(--gold-pale); color: var(--cocoa); }
-.status-pill.Delivered { background: #d8ead4; color: var(--success); }
-.status-pill.Cancelled { background: #f0d4d4; color: var(--danger); }
+.status-pill.Delivered { background: #D8B980; color: var(--deep-brown); }
+.status-pill.Cancelled { background: var(--deep-brown); color: var(--soft-beige); }
 .order-item { display: flex; gap: 12px; align-items: center; padding: 8px 0; }
 .order-item img { width: 56px; height: 70px; object-fit: cover; background: var(--cream-deep); }
 .track-timeline { margin-top: 16px; }
@@ -388,4 +388,4 @@
 @media (max-width: 900px) { .wish-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px) { .wish-grid { grid-template-columns: 1fr; } }
 .wish-remove { display: block; width: 100%; text-align: center; margin-top: 8px; background: none; border: 1px solid var(--line); padding: 8px; color: var(--danger); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
-.wish-remove:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+.wish-remove:hover { background: var(--danger); color: #FBF6EC; border-color: var(--danger); }
