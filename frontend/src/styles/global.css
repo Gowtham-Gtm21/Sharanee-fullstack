@@ -146,7 +146,7 @@ input, select, textarea {
   text-transform: uppercase;
   padding: 5px 10px;
 }
-.badge-sale { background: var(--danger); }
+.badge-sale { background: var(--cocoa); }
 
 .spinner {
   width: 34px; height: 34px;
