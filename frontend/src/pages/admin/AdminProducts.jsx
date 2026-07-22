@@ -62,6 +62,7 @@ const EMPTY = {
   occasion: "",
   pattern: "",
   size: [],
+  featured: false,
 };
 
 const MAX_IMAGES = 5;
@@ -147,6 +148,7 @@ export default function AdminProducts() {
         : product.size
         ? [product.size]
         : [],
+      featured: Boolean(product.featured),
     });
 
     setEditing(product._id);
@@ -483,6 +485,17 @@ export default function AdminProducts() {
                     </label>
                   ))}
                 </div>
+              </div>
+
+              <div className="field">
+                <label className="size-check" style={{ display: "inline-flex" }}>
+                  <input
+                    type="checkbox"
+                    checked={form.featured}
+                    onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+                  />
+                  Featured (show in "Most Loved Styles" on the home page)
+                </label>
               </div>
 
               <div className="field">
