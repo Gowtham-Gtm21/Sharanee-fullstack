@@ -41,8 +41,8 @@ export const BLOGS = [
     cover: "https://ps-vastra.myshopify.com/cdn/shop/articles/This_couple_gave_their_friends_and_family_the_dolce_vita_experience_at_their_destination_wedding_in_Italy_5258d012-9082-4415-8f19-107c38d531af.jpg?crop=center&height=248&v=1775211890&width=471",
     excerpt: "Beyond the wedding day — how to curate a trousseau you'll reach for years later.",
     body: [
-      "The best trousseaus aren't the largest; they're the most considered. Begin with anchor pieces you'll re-wear: a heritage silk saree, a versatile lehenga, and a fusion set that travels from mehndi to reception.",
-      "Balance statement embroidery with quieter, re-styleable pieces. A richly worked lehenga deserves the spotlight once; a well-cut kurta set earns its place season after season.",
+      "The best trousseaus aren't the largest; they're the most considered. Begin with anchor pieces you'll re-wear: a heritage silk saree, Designer Sarees, and a fusion set that travels from mehndi to reception.",
+      "Balance statement embroidery with quieter, re-styleable pieces. A richly worked Designer Sarees deserves the spotlight once; a well-cut kurta set earns its place season after season.",
       "Think in palettes, not single colours. Jewel tones photograph beautifully and mix effortlessly across the wedding week.",
     ],
   },
@@ -83,7 +83,7 @@ export const BLOGS = [
     cover: "https://ps-vastra.myshopify.com/cdn/shop/articles/fdb844f9ec334795b3b3b9a63eaff41a_a033e337-7d32-4c62-8632-ec6723744c4e.jpg?crop=center&height=248&v=1775211484&width=471",
     excerpt: "Where tradition meets the contemporary — fusion pieces for the modern celebration.",
     body: [
-      "Fusion wear is about dialogue: a traditional silhouette meeting a modern cut. A cape over a lehenga, a pant-saree, a structured blouse with a fluid drape.",
+      "Fusion wear is about dialogue: a traditional silhouette meeting a modern cut. A cape over a Designer Sarees, a pant-saree, a structured blouse with a fluid drape.",
       "The trick is to let one element be traditional and the other contemporary — not both at once. Restraint keeps fusion elegant rather than costume-like.",
       "Sharanee's fusion edit is designed exactly this way: heritage fabric, modern tailoring, endlessly re-styleable.",
     ],

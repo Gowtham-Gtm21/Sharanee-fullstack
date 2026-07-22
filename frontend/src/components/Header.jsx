@@ -145,8 +145,8 @@ export default function Header() {
                                                     Saree Inskirt
                                                 </Link>
 
-                                                <Link to="/shop?search=Lehenga">
-                                                    Lehenga Set
+                                                <Link to="/shop?search=Designer Sarees">
+                                                    Designer Sarees
                                                 </Link>
 
                                                 <Link to="/shop?search=Gown">

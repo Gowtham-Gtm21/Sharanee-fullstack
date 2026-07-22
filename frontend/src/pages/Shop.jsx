@@ -101,7 +101,7 @@ export default function Shop() {
 
   const circles = cats.length
     ? cats.map((c, i) => ({ id: c._id, name: c.categoryName, img: c.categoryImage ? imageUrl(c.categoryImage) : CIRCLE_FALLBACK[i % CIRCLE_FALLBACK.length] }))
-    : ["Saree", "Lehenga Set", "Indo Western", "Traditional Gown", "Kurta Set", "Sharara Set"].map((n, i) => ({ id: "", name: n, img: CIRCLE_FALLBACK[i % CIRCLE_FALLBACK.length], search: n }));
+    : ["Saree", "Designer Sarees", "Indo Western", "Traditional Gown", "Kurta Set", "Sharara Set"].map((n, i) => ({ id: "", name: n, img: CIRCLE_FALLBACK[i % CIRCLE_FALLBACK.length], search: n }));
 
   const activeChips = [
     category && { k: "category", label: catOpts.find((c) => c.value === category)?.label },

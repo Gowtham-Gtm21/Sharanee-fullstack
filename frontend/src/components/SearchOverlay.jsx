@@ -4,7 +4,7 @@ import { productApi } from "../api/endpoints";
 import { imageUrl } from "../api/client";
 import { Icon } from "./Icons";
 
-const POPULAR = ["Saree", "Lehenga", "Banarasi", "Silk", "Bridal", "Kurta Set"];
+const POPULAR = ["Saree", "Banarasi", "Silk", "Bridal"];
 
 export default function SearchOverlay({ onClose }) {
   const [q, setQ] = useState("");
@@ -57,7 +57,7 @@ export default function SearchOverlay({ onClose }) {
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search for sarees, lehengas, gowns…"
+            placeholder="Search for sarees, Silk Sarees, Designer Sarees..."
             aria-label="Search products"
           />
           {q && <button type="button" className="search-clear" onClick={() => setQ("")}><Icon.Close size={18} /></button>}

@@ -9,7 +9,7 @@ const HERO =
   "https://ps-vastra.myshopify.com/cdn/shop/files/Adobe_Express_-_file_1.png?crop=center&height=870&v=1777716059&width=882";
 const CAT_FALLBACK = [
   { name: "Saree Inskirt", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/Saree_f21a0b8d-af7e-4925-aa0c-6795f26f90d3.webp?v=1775470531" },
-  { name: "Lehenga Set", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/lehnga_Set.webp?v=1773202620" },
+  { name: "Designer Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/lehnga_Set.webp?v=1773202620" },
   { name: "Indo Western", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/indo_western.webp?v=1773202846" },
   { name: "Traditional Gown", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/gown.webp?v=1773202521" },
   { name: "Kurta Set", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/Suit_Set.webp?v=1773202954" },

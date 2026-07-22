@@ -58,7 +58,7 @@ export default function Footer() {
           <div className="foot-col">
             <h4>Categories</h4>
             <Link to="/shop">Saree Inskirt</Link>
-            <Link to="/shop">Lehenga Set</Link>
+            <Link to="/shop"> Designer Sarees</Link>
             <Link to="/shop">Fusion Wear</Link>
             <Link to="/shop">Traditional Gown</Link>
             <Link to="/shop">Kurta Set</Link>
