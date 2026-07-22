@@ -92,9 +92,17 @@
 .admin-side .out {
   margin-top: auto;
   background: none;
-  border: 1px solid rgba(230, 207, 163, 0.3);
-  color: var(--gold-pale);
+  border: 1px solid #E88B8B;
+  color: #E88B8B;
   padding: 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.admin-side .out:hover {
+  background: var(--danger);
+  color: #FBF6EC;
+  border-color: var(--danger);
 }
 
 .admin-main {

@@ -358,8 +358,8 @@
 .order-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 14px; }
 .order-head small { color: var(--muted); }
 .status-pill { padding: 5px 14px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; background: var(--gold-pale); color: var(--cocoa); }
-.status-pill.Delivered { background: #D8B980; color: var(--deep-brown); }
-.status-pill.Cancelled { background: var(--deep-brown); color: var(--soft-beige); }
+.status-pill.Delivered { background: #DCEAD5; color: var(--success); }
+.status-pill.Cancelled { background: #F2DADA; color: var(--danger); }
 .order-item { display: flex; gap: 12px; align-items: center; padding: 8px 0; }
 .order-item img { width: 56px; height: 70px; object-fit: cover; background: var(--cream-deep); }
 .track-timeline { margin-top: 16px; }
