@@ -16,7 +16,7 @@
 
   /* ===== Semantic tokens (mapped to the 5 brand colors) ===== */
   --cream: #f7f1e6;        /* page background = Soft Beige */
-  --cream-deep: #E6CFA3;   /* media / deeper surfaces = Light Gold Tint */
+  --cream-deep: #efe6d5;   /* media / deeper surfaces = Light Gold Tint */
   --ivory: #FBF6EC;        /* cards / panels = light tint of Soft Beige */
   --cocoa: #4A2C1A;        /* headings, dark UI = Deep Brown */
   --cocoa-soft: #6E4B34;   /* body / secondary text (soft brown) */
