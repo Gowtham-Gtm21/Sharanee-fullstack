@@ -1,0 +1,205 @@
+/* ============================================================
+   ADVANCED RESPONSIVE LAYER
+   Loaded last so it refines the base rules across breakpoints.
+   Breakpoints: 1100 / 940 / 768 / 600 / 480 / 380
+   ============================================================ */
+
+/* ---- Prevent any accidental horizontal overflow globally ---- */
+html, body { overflow-x: hidden; }
+img, svg, video { max-width: 100%; }
+
+/* ---- Fluid typography (scales smoothly between phone and desktop) ---- */
+.hero h1 { font-size: clamp(2.4rem, 8vw, 4.6rem); }
+.section-head h2, .split-copy h2 { font-size: clamp(1.7rem, 4.5vw, 2.6rem); }
+.pdp-info h1 { font-size: clamp(1.6rem, 5vw, 2.6rem); }
+.article-head h1 { font-size: clamp(1.9rem, 5.5vw, 2.8rem); }
+.about-hero h1 { font-size: clamp(2rem, 6vw, 3rem); }
+.auth-visual-in h2 { font-size: clamp(1.9rem, 5vw, 2.6rem); }
+.page-wrap > .container > h1, .page-wrap h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+/* Large tablet — tighten nav so it never crowds the logo */
+@media (max-width: 1100px) {
+  .nav { gap: 20px; }
+  .nav a { font-size: 0.78rem; letter-spacing: 0.08em; }
+  .header-icons { gap: 16px; }
+}
+
+/* Tablet / mobile — burger nav (base app already switches at 940) */
+@media (max-width: 940px) {
+  /* enhance.css re-declares `.nav { display:flex }` after the base media
+     query, which kept the desktop nav visible on mobile. Because this file
+     loads last, these rules win and restore correct mobile behaviour. */
+  .nav { display: none !important; }
+  .burger { display: inline-flex !important; }
+  .header .container { grid-template-columns: auto 1fr auto; gap: 10px; }
+  .header-icons { gap: 16px; flex-wrap: nowrap; white-space: nowrap; }
+  /* Account dropdown must never spill off-screen */
+  .acct-menu { width: min(240px, calc(100vw - 24px)); right: 0; }
+}
+
+/* Small phone */
+@media (max-width: 600px) {
+  .topbar { display: none; }                 /* free up vertical space */
+  .announce-track { font-size: 0.68rem; letter-spacing: 0.1em; }
+  .header .container { height: 66px; }
+  .brand img { height: 46px; }
+  .header-icons { gap: 13px; }
+  .header-icons svg { width: 20px; height: 20px; }
+  .icon-count { top: -7px; right: -8px; width: 15px; height: 15px; font-size: 0.58rem; }
+  .drawer { width: 84%; }
+}
+
+/* Very small phone */
+@media (max-width: 380px) {
+  .header .container { height: 60px; }
+  .brand img { height: 40px; }
+  .header-icons { gap: 10px; }
+  .acct-menu { width: calc(100vw - 20px); right: -6px; }
+}
+
+/* ============================================================
+   SHOP — CATEGORY CIRCLES
+   ============================================================ */
+@media (max-width: 700px) {
+  /* Scroll from the left edge instead of forcing center (better on touch) */
+  .circle-row { justify-content: flex-start; gap: 18px; padding: 24px 4px 8px; }
+  .circle { width: 96px; }
+  .circle-img { width: 84px; height: 84px; }
+  .circle-label { font-size: 0.78rem; }
+}
+@media (max-width: 420px) {
+  .circle { width: 82px; }
+  .circle-img { width: 72px; height: 72px; }
+}
+
+/* ============================================================
+   SHOP — FILTER + SORT BAR (advanced mobile behaviour)
+   ============================================================ */
+@media (max-width: 860px) {
+  /* Row 1: [Filters]  ...  [count + Sort]. Row 2 (toggled): stacked filters */
+  .filterbar { gap: 10px; align-items: stretch; }
+  .fb-toggle {
+    display: inline-flex; justify-content: center;
+    order: 1; flex: 0 0 auto;
+  }
+  .fb-sort {
+    order: 2; margin-left: auto; width: auto;
+    gap: 10px; align-items: center; flex: 0 0 auto;
+  }
+  .fb-count { font-size: 0.8rem; }
+  .fb-drops {
+    order: 3; width: 100%; flex-direction: column; gap: 8px;
+    margin-top: 4px;
+  }
+  .fb-drops.show { display: flex; }
+  .fb-drops .fdrop { width: 100%; }
+  .fb-drops .fdrop-btn { width: 100%; justify-content: space-between; }
+  /* Filter menus open in-flow full width so they never clip off-screen */
+  .fb-drops .fdrop-menu {
+    position: static; width: 100%; max-width: 100%; max-height: 220px;
+    box-shadow: none; border-top: none; margin-top: 2px;
+  }
+  /* Sort menu stays a popover but pinned to the right edge, viewport-safe */
+  .fb-sort .fdrop-menu { left: auto; right: 0; max-width: min(260px, 92vw); }
+}
+
+@media (max-width: 480px) {
+  .fb-sort { width: 100%; justify-content: space-between; }
+  .fb-toggle { width: 100%; }
+  .chips { gap: 6px; }
+  .chip { font-size: 0.74rem; padding: 5px 10px; }
+}
+
+/* ============================================================
+   SEARCH OVERLAY
+   ============================================================ */
+@media (max-width: 600px) {
+  .search-overlay { padding: 8vh 12px 12px; align-items: flex-start; }
+  .search-panel { padding: 22px 18px; }
+  .search-x { top: 14px; right: 14px; }
+  .search-box input { font-size: 1rem; }
+  .search-eyebrow { font-size: 0.64rem; letter-spacing: 0.18em; }
+  .search-results { max-height: 58vh; }
+  .search-tags button { font-size: 0.8rem; padding: 7px 13px; }
+  .search-hit img { width: 44px; height: 56px; }
+}
+@media (max-width: 380px) {
+  .search-panel { padding: 18px 14px; }
+}
+
+/* ============================================================
+   PRODUCT GRID + CARDS
+   ============================================================ */
+/* Keep two columns on phones for a fuller catalogue, single on the smallest */
+@media (max-width: 520px) {
+  .grid-cards { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .pcard-name { font-size: 0.9rem; }
+  .pcard-actions button { width: 38px; height: 38px; }
+}
+@media (max-width: 360px) {
+  .grid-cards { grid-template-columns: 1fr; }
+}
+/* Touch devices: reveal card actions (no hover) */
+@media (hover: none) {
+  .pcard-actions { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ============================================================
+   PRODUCT DETAIL
+   ============================================================ */
+@media (max-width: 600px) {
+  .pdp { gap: 22px; padding: 28px 0; }
+  .pdp-cta { flex-direction: column; }
+  .pdp-cta .btn { width: 100%; justify-content: center; }
+  .qty { margin-right: 0; }
+  .pdp-thumbs img { width: 60px; height: 78px; }
+}
+
+/* ============================================================
+   CART / CHECKOUT / ACCOUNT / ORDERS
+   ============================================================ */
+@media (max-width: 600px) {
+  .page-wrap { padding: 28px 0 50px; }
+  .summary { padding: 20px; }
+  .order-card { padding: 16px; }
+  .order-head { gap: 6px; }
+  .coupon-row { flex-wrap: wrap; }
+  .coupon-row .btn { width: 100%; }
+}
+
+/* ============================================================
+   ADMIN
+   ============================================================ */
+@media (max-width: 1000px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px)  { .dash-2col { grid-template-columns: 1fr; } }
+@media (max-width: 700px) {
+  .admin-table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+@media (max-width: 480px) {
+  .stat-grid { grid-template-columns: 1fr; }
+  .stat .n { font-size: 1.8rem; }
+  .admin-main h1 { font-size: 1.6rem; }
+}
+
+/* ============================================================
+   FOOTER + NEWSLETTER
+   ============================================================ */
+@media (max-width: 600px) {
+  .foot-main { padding: 40px 0 20px; }
+  .news h3 { font-size: 1.5rem; }
+  .news form { width: 100%; max-width: 100%; }
+  .foot-grid { gap: 24px; }
+}
+
+/* ============================================================
+   BLOG
+   ============================================================ */
+@media (max-width: 600px) {
+  .blog-feature-copy h2 { font-size: 1.6rem; }
+  .blog-tabs { gap: 6px; }
+  .blog-tabs button { padding: 7px 13px; font-size: 0.78rem; }
+}

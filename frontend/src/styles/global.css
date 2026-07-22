@@ -1,0 +1,215 @@
+/* ============================================================
+   SHARANEE — Saree Inskirt
+   Brand tokens derived from the logo:
+   cream ground, deep cocoa-brown, warm gold, muted rose.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap");
+
+:root {
+  /* Palette */
+  --cream: #f7f1e6;
+  --cream-deep: #efe6d5;
+  --ivory: #fdfaf3;
+  --cocoa: #3f2317;      /* deep brown from the wordmark */
+  --cocoa-soft: #5a3826;
+  --gold: #b78d3f;       /* the tagline gold */
+  --gold-soft: #c9a75c;
+  --gold-pale: #e7d6ac;
+  --rose: #a86b62;
+  --ink: #2c1c12;
+  --muted: #8a7a68;
+  --line: #e2d6c0;
+  --danger: #b23b3b;
+  --success: #4f7a4a;
+
+  /* Type */
+  --display: "Cormorant Garamond", Georgia, serif;
+  --body: "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  --maxw: 1240px;
+  --radius: 2px;
+  --shadow: 0 12px 40px -18px rgba(63, 35, 23, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--body);
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--cocoa);
+  margin: 0 0 0.4em;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+a { color: inherit; text-decoration: none; }
+
+img { display: block; max-width: 100%; }
+
+button { font-family: var(--body); cursor: pointer; }
+
+input, select, textarea {
+  font-family: var(--body);
+  font-size: 0.95rem;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: var(--cocoa);
+  color: var(--ivory);
+  padding: 13px 30px;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: background 0.25s, transform 0.15s;
+}
+.btn:hover { background: var(--cocoa-soft); }
+.btn:active { transform: translateY(1px); }
+
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-gold:hover { background: var(--gold-soft); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--cocoa);
+  border: 1px solid var(--cocoa);
+}
+.btn-outline:hover { background: var(--cocoa); color: var(--ivory); }
+
+.btn-block { width: 100%; justify-content: center; }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ---- Section headings ---- */
+.section { padding: 74px 0; }
+.section-head { text-align: center; margin-bottom: 44px; }
+.section-head .eyebrow {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.section-head h2 { font-size: 2.6rem; }
+.section-head p { color: var(--muted); max-width: 560px; margin: 8px auto 0; }
+
+/* ---- Utility ---- */
+.eyebrow {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+.price { color: var(--gold); font-weight: 500; }
+.price .strike { color: var(--muted); text-decoration: line-through; margin-left: 8px; font-weight: 400; }
+
+.badge {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: var(--cocoa);
+  color: var(--ivory);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+}
+.badge-sale { background: var(--danger); }
+
+.spinner {
+  width: 34px; height: 34px;
+  border: 3px solid var(--gold-pale);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 60px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+.empty h3 { color: var(--cocoa); font-size: 1.8rem; }
+
+.toast-wrap {
+  position: fixed;
+  right: 20px; bottom: 20px;
+  z-index: 2000;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.toast {
+  background: var(--cocoa);
+  color: var(--ivory);
+  padding: 14px 20px;
+  min-width: 240px;
+  box-shadow: var(--shadow);
+  animation: slidein 0.3s ease;
+  font-size: 0.9rem;
+}
+.toast.error { background: var(--danger); }
+.toast.success { background: var(--success); }
+@keyframes slidein { from { transform: translateX(30px); opacity: 0; } }
+
+/* Forms */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cocoa-soft);
+  margin-bottom: 7px;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  background: var(--ivory);
+  color: var(--ink);
+  outline: none;
+  transition: border 0.2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--gold);
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+@media (max-width: 1000px) { .grid-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .grid-cards { grid-template-columns: 1fr; gap: 20px; } }
+
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
