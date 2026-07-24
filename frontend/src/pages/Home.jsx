@@ -72,7 +72,7 @@ export default function Home() {
             <span className="eyebrow" style={{ color: "var(--gold-pale)" }}>
               Crafted for Every Celebration
             </span>
-            <h1>Crafted for Modern Royalty</h1>
+            <h1>Crafted for Modern Royaltyyyy</h1>
             <p>Timeless designs rooted in tradition, crafted for every celebration.</p>
             <Link to="/shop" className="btn btn-gold">
               Explore <Icon.Arrow />
