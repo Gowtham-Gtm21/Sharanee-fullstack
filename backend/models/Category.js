@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const categorySchema = new mongoose.Schema(
   {
     categoryName: { type: String, required: true, trim: true, unique: true },
-    categoryImage: { type: String, default: "" },
+    categoryImages: {
+      type: [String],
+      default: [],
+    },
     description: { type: String, default: "" },
   },
   { timestamps: true }

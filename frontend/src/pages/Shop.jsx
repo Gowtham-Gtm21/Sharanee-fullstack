@@ -36,7 +36,7 @@ export default function Shop() {
   const [cats, setCats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mobileFilters, setMobileFilters] = useState(false);
-
+  const [currentImage, setCurrentImage] = useState({});
   const search = params.get("search") || "";
   const category = params.get("category") || "";
   const sort = params.get("sort") || "";
@@ -50,10 +50,30 @@ export default function Shop() {
   // Categories (for circles + product-type dropdown) and a full product list
   // (for deriving colour/fabric/tag/price options) — fetched once.
   useEffect(() => {
-    categoryApi.list().then((r) => setCats(r.data.categories || [])).catch(() => {});
-    productApi.list().then((r) => setAllProducts(r.data.products || [])).catch(() => {});
+    categoryApi.list().then((r) => setCats(r.data.categories || [])).catch(() => { });
+    productApi.list().then((r) => setAllProducts(r.data.products || [])).catch(() => { });
   }, []);
 
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => {
+        const next = { ...prev };
+
+        cats.forEach((cat) => {
+          if (cat.categoryImages?.length > 1) {
+            next[cat._id] =
+              ((prev[cat._id] || 0) + 1) % cat.categoryImages.length;
+          }
+        });
+
+        return next;
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [cats]);
   // Fetch the filtered list from the backend whenever a server-side filter changes.
   useEffect(() => {
     setLoading(true);
@@ -70,6 +90,8 @@ export default function Shop() {
       if (min) q.minPrice = min;
       if (max) q.maxPrice = max;
     }
+
+
     productApi.list(q)
       .then((r) => setProducts(r.data.products || []))
       .catch(() => setProducts([]))
@@ -100,7 +122,13 @@ export default function Shop() {
   const catOpts = cats.map((c) => ({ value: c._id, label: c.categoryName }));
 
   const circles = cats.length
-    ? cats.map((c, i) => ({ id: c._id, name: c.categoryName, img: c.categoryImage ? imageUrl(c.categoryImage) : CIRCLE_FALLBACK[i % CIRCLE_FALLBACK.length] }))
+    ? cats.map((c, i) => ({
+      id: c._id, name: c.categoryName, img: c.categoryImages?.length
+        ? imageUrl(
+          c.categoryImages[currentImage[c._id] || 0]
+        )
+        : CIRCLE_FALLBACK[i % CIRCLE_FALLBACK.length]
+    }))
     : ["Saree", "Designer Sarees", "Cotton Sarees", "Bridal Sarees ", "Silk Sarees"].map((n, i) => ({ id: "", name: n, img: CIRCLE_FALLBACK[i % CIRCLE_FALLBACK.length], search: n }));
 
   const activeChips = [
@@ -113,7 +141,7 @@ export default function Shop() {
     search && { k: "search", label: `“${search}”` },
     featured && { k: "featured", label: "Featured" },
   ].filter(Boolean);
-
+  console.log(cats);
   return (
     <>
       <div className="crumb">
@@ -142,6 +170,8 @@ export default function Shop() {
           })}
         </div>
       </div>
+
+
 
       {/* Filter bar */}
       <div className="filterbar-wrap">

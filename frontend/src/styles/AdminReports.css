@@ -1,0 +1,475 @@
+/* Reports page sits directly inside .admin-main (which already provides
+   the cream background and page padding) — no extra wrapper here. */
+
+.reports-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+/* Header */
+
+.reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 26px;
+}
+
+.reports-header h1 {
+    font-size: 2rem;
+    margin-bottom: 4px;
+}
+
+.reports-header p {
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.header-buttons button {
+    width: 46px;
+    height: 46px;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 17px;
+    color: var(--gold);
+    box-shadow: 0 8px 20px rgba(74, 44, 26, 0.08);
+    transition: 0.25s;
+}
+
+.header-buttons button:hover {
+    transform: translateY(-3px);
+    background: var(--gold);
+    color: #fff;
+}
+
+/* Stat Cards */
+
+.report-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.report-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 10px 28px rgba(74, 44, 26, .08);
+    transition: .25s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+}
+
+.report-card:hover {
+    transform: translateY(-6px);
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-top span {
+    font-size: .9rem;
+    color: #7c6f63;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-weight: 600;
+}
+
+.icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #f6e5bb;
+    color: #c79a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+.report-card:hover .icon-box {
+    transform: rotate(8deg) scale(1.08);
+}
+
+.report-card h2 {
+    margin: 24px 0 10px;
+    font-size: 3rem;
+    color: #4d2d1b;
+    font-weight: 700;
+}
+
+.success {
+    font-size: .92rem;
+    color: #6f5e50;
+    font-weight: 500;
+}
+
+/* Tables Layout */
+
+.reports-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.report-table-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(74, 44, 26, 0.06);
+    padding: 22px;
+    overflow-x: auto;
+    transition: 0.25s;
+}
+
+.report-table-card:hover {
+    box-shadow: 0 14px 32px rgba(74, 44, 26, 0.1);
+}
+
+/* Table Header */
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-title svg {
+    color: var(--gold);
+    font-size: 18px;
+}
+
+.table-title h3 {
+    font-size: 1.15rem;
+    margin: 0;
+}
+
+.view-all-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    background: var(--gold-pale);
+    color: var(--cocoa);
+    padding: 9px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.82rem;
+    transition: 0.25s;
+}
+
+.view-all-btn:hover {
+    background: var(--gold);
+    color: #fff;
+}
+
+.view-all-btn:active,
+.header-buttons button:active {
+    transform: scale(0.95);
+}
+
+/* Table */
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.report-table th {
+    text-align: left;
+    padding: 12px;
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+}
+
+.report-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: var(--ink);
+}
+
+.report-table tbody tr:hover {
+    background: var(--cream);
+}
+
+/* Product */
+
+.product-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.product-cell img {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+}
+
+.product-cell span {
+    font-weight: 600;
+    color: var(--cocoa);
+}
+
+/* Customer */
+
+.customer-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+/* Stock */
+
+.stock-red {
+    color: var(--danger);
+    font-weight: 700;
+}
+
+.stock-orange {
+    color: #C98A2C;
+    font-weight: 700;
+}
+
+.stock-green {
+    color: var(--success);
+    font-weight: 700;
+}
+
+/* Badges */
+.reports-content .badge {
+    position: static !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff !important;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.reports-content .badge.success {
+    background: #16a34a;
+}
+
+.reports-content .badge.warning {
+    background: #f59e0b;
+}
+
+.reports-content .badge.danger {
+    background: #ef4444;
+}
+
+.reports-content .badge.primary {
+    background: #2563eb;
+}
+
+.reports-content .badge.purple {
+    background: #7c3aed;
+}
+
+.empty-table {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px;
+}
+
+/* Fade in */
+
+.report-card,
+.report-table-card {
+    animation: fadeUp 0.4s ease;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+    .report-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .reports-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .reports-header {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .header-buttons {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .report-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .view-all-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .report-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .reports-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .report-table th,
+    .report-table td {
+        padding: 9px;
+        font-size: 0.75rem;
+    }
+
+    .product-cell img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+
+    .icon-box {
+        width: 42px;
+        height: 42px;
+        font-size: 17px;
+    }
+}
+
+/* ===========================
+   Report List
+=========================== */
+
+.report-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.report-list div,
+.report-list p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #374151;
+    transition: .25s;
+}
+
+.report-list div:hover {
+    background: #eef6ff;
+    border-color: #3b82f6;
+}
+
+.report-list strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+.report-list p {
+    justify-content: flex-start;
+    margin: 0;
+}
+
+/* Scroll if data is large */
+
+.report-table-card {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.report-table-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.report-table-card::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+}
+
+.report-table-card::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}

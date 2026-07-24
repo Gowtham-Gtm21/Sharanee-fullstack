@@ -6,7 +6,9 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const { notFound, errorHandler } = require("./middleware/errorHandler");
-
+const searchRoutes = require("./routes/searchRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const settingRoutes = require("./routes/settingRoutes");
 connectDB();
 
 const app = express();
@@ -51,7 +53,9 @@ app.use("/api/settings", require("./routes/settingRoutes"));
 app.use("/api/offers", require("./routes/offerRoutes"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
-
+app.use("/api/admin/search", searchRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/settings", settingRoutes);
 app.use(notFound);
 app.use(errorHandler);
 

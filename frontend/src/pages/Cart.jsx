@@ -20,9 +20,10 @@ export default function Cart() {
     if (!code.trim()) return;
     try {
       const { data } = await couponApi.apply(code.trim(), cartTotal);
+      console.log("Coupon Response:", data);
       setDiscount(data.discount);
-      setAppliedCode(data.coupon);
-      toast.success(`Coupon ${data.coupon} applied.`);
+      setAppliedCode(data.coupon.code);
+      toast.success(`Coupon ${data.coupon.code} applied.`);
     } catch (err) {
       setDiscount(0);
       setAppliedCode("");

@@ -57,7 +57,122 @@ const dashboard = asyncHandler(async (req, res) => {
     revenueResult.length > 0
       ? revenueResult[0].totalRevenue
       : 0;
+  // ============================
+  // Customer Growth (Last Week)
+  // ============================
 
+  const today = new Date();
+
+  const startOfThisWeek = new Date(today);
+  startOfThisWeek.setDate(today.getDate() - 7);
+
+  const startOfLastWeek = new Date(today);
+  startOfLastWeek.setDate(today.getDate() - 14);
+
+  const customersThisWeek = await User.countDocuments({
+    role: "user",
+    createdAt: {
+      $gte: startOfThisWeek,
+    },
+  });
+
+  const customersLastWeek = await User.countDocuments({
+    role: "user",
+    createdAt: {
+      $gte: startOfLastWeek,
+      $lt: startOfThisWeek,
+    },
+  });
+
+  const customerGrowth =
+    customersLastWeek === 0
+      ? 100
+      : Number(
+        (
+          ((customersThisWeek - customersLastWeek) /
+            customersLastWeek) *
+          100
+        ).toFixed(1)
+      );
+
+
+  // ============================
+  // Revenue Growth (Last Month)
+  // ============================
+
+  const startOfThisMonth = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    1
+  );
+
+  const startOfLastMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() - 1,
+    1
+  );
+
+  const endOfLastMonth = startOfThisMonth;
+
+  const currentRevenueData = await Order.aggregate([
+    {
+      $match: {
+        orderStatus: {
+          $nin: ["Cancelled", "Canceled"],
+        },
+        createdAt: {
+          $gte: startOfThisMonth,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        total: {
+          $sum: "$totalAmount",
+        },
+      },
+    },
+  ]);
+
+  const previousRevenueData = await Order.aggregate([
+    {
+      $match: {
+        orderStatus: {
+          $nin: ["Cancelled", "Canceled"],
+        },
+        createdAt: {
+          $gte: startOfLastMonth,
+          $lt: endOfLastMonth,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        total: {
+          $sum: "$totalAmount",
+        },
+      },
+    },
+  ]);
+
+  const currentRevenue =
+    currentRevenueData[0]?.total || 0;
+
+  const previousRevenue =
+    previousRevenueData[0]?.total || 0;
+
+  const revenueGrowth =
+    previousRevenue === 0
+      ? 100
+      : Number(
+        (
+          ((currentRevenue - previousRevenue) /
+            previousRevenue) *
+          100
+        ).toFixed(1)
+      );
   res.status(200).json({
     dashboard: {
       totalUsers,
@@ -65,6 +180,15 @@ const dashboard = asyncHandler(async (req, res) => {
       totalCategories,
       totalOrders,
       totalRevenue,
+
+      customerGrowth,
+      customersThisWeek,
+      customersLastWeek,
+
+      revenueGrowth,
+      currentRevenue,
+      previousRevenue,
+
       lowStockCount,
       outOfStockCount,
     },
@@ -105,7 +229,13 @@ const getUser = asyncHandler(async (req, res) => {
 // @route  PUT /api/admin/users/:id
 // @access Admin
 const updateUser = asyncHandler(async (req, res) => {
-  const { fullName, email, phone, role } = req.body;
+  const {
+    fullName,
+    email,
+    phone,
+    role,
+    isActive,
+  } = req.body;
 
   const user = await User.findById(req.params.id);
 
@@ -127,10 +257,9 @@ const updateUser = asyncHandler(async (req, res) => {
     user.phone = phone;
   }
 
-  if (role !== undefined) {
-    user.role = role;
+  if (isActive !== undefined) {
+    user.isActive = isActive;
   }
-
   await user.save();
 
   const updatedUser = await User.findById(user._id).select(

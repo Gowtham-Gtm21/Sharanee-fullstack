@@ -31,13 +31,13 @@ const createCategory = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "categoryName is required" });
   }
 
-  const categoryImage = req.file
-    ? req.file.path
-    : "";
+  const categoryImages = req.files
+    ? req.files.map(file => file.path)
+    : [];
 
   const category = await Category.create({
     categoryName,
-    categoryImage,
+    categoryImages,
     description,
   });
 
@@ -58,16 +58,20 @@ const updateCategory = asyncHandler(async (req, res) => {
   if (categoryName !== undefined) category.categoryName = categoryName;
   if (description !== undefined) category.description = description;
 
-  if (req.file) {
-    const oldImage = category.categoryImage;
-    category.categoryImage = req.file.path;
+  const existingImages = req.body.existingImages
+    ? JSON.parse(req.body.existingImages)
+    : [];
 
-    await category.save();
+  const uploadedImages = req.files
+    ? req.files.map(file => file.path)
+    : [];
 
-    deleteImageFile(oldImage);
-  } else {
-    await category.save();
-  }
+  category.categoryImages = [
+    ...existingImages,
+    ...uploadedImages,
+  ];
+
+  await category.save();
 
   res.json({ category });
 });
@@ -79,12 +83,11 @@ const removeCategory = asyncHandler(async (req, res) => {
   if (!category) {
     return res.status(404).json({ message: "Category not found" });
   }
-
-  const categoryImage = category.categoryImage;
+  const images = category.categoryImages || [];
 
   await category.deleteOne();
 
-  deleteImageFile(categoryImage);
+  images.forEach(deleteImageFile);
 
   res.json({ message: "Category deleted successfully" });
 });

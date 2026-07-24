@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Product = require("../models/Product");
 const asyncHandler = require("../utils/asyncHandler");
+const Notification = require("../models/Notification");
 
 const SORTS = {
   "price-asc": { price: 1 },
@@ -318,10 +319,25 @@ const updateProduct = asyncHandler(async (req, res) => {
   Object.assign(product, body);
   await product.save();
 
+  // Low Stock Notification
+  if (product.stock <= 5 && product.stock > 0) {
+    await Notification.create({
+      title: "⚠ Low Stock",
+      message: `${product.productName} has only ${product.stock} items left.`,
+    });
+  }
+
+  // Out of Stock Notification
+  if (product.stock === 0) {
+    await Notification.create({
+      title: "❌ Out of Stock",
+      message: `${product.productName} is now out of stock.`,
+    });
+  }
+
   if (removedImages.length) {
     deleteImageFiles(removedImages);
   }
-
   const updatedProduct = await Product.findById(product._id).populate(
     "category",
     "categoryName"

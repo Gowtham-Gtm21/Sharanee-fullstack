@@ -82,6 +82,13 @@ export default function AdminProducts() {
   const [newFiles, setNewFiles] = useState([]);
 
   const [busy, setBusy] = useState(false);
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [stockFilter, setStockFilter] = useState("");
+  const [sortBy, setSortBy] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 5;
 
   const load = () =>
     productApi
@@ -89,7 +96,7 @@ export default function AdminProducts() {
       .then((response) => {
         setProducts(response.data.products || []);
       })
-      .catch(() => {});
+      .catch(() => { });
 
   useEffect(() => {
     load();
@@ -99,7 +106,7 @@ export default function AdminProducts() {
       .then((response) => {
         setCats(response.data.categories || []);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const f = (key) => ({
@@ -146,8 +153,8 @@ export default function AdminProducts() {
       size: Array.isArray(product.size)
         ? product.size
         : product.size
-        ? [product.size]
-        : [],
+          ? [product.size]
+          : [],
       featured: Boolean(product.featured),
     });
 
@@ -258,32 +265,157 @@ export default function AdminProducts() {
       toast.error("Could not delete.");
     }
   };
+  // ================= FILTER + SORT + PAGINATION =================
 
+  let filteredProducts = [...products];
+
+  // Search
+  if (search.trim()) {
+    filteredProducts = filteredProducts.filter((product) =>
+      product.productName
+        ?.toLowerCase()
+        .includes(search.toLowerCase())
+    );
+  }
+
+  // Category
+  if (categoryFilter) {
+    filteredProducts = filteredProducts.filter(
+      (product) =>
+        product.category?.categoryName === categoryFilter
+    );
+  }
+
+  // Stock
+  if (stockFilter) {
+    filteredProducts = filteredProducts.filter(
+      (product) => product.stockStatus === stockFilter
+    );
+  }
+
+  // Sort
+  if (sortBy === "low") {
+    filteredProducts.sort((a, b) => a.price - b.price);
+  }
+
+  if (sortBy === "high") {
+    filteredProducts.sort((a, b) => b.price - a.price);
+  }
+
+  if (sortBy === "name") {
+    filteredProducts.sort((a, b) =>
+      a.productName.localeCompare(b.productName)
+    );
+  }
+
+  // Pagination
+  const lastIndex = currentPage * productsPerPage;
+  const firstIndex = lastIndex - productsPerPage;
+
+  const currentProducts = filteredProducts.slice(
+    firstIndex,
+    lastIndex
+  );
+
+  const totalPages = Math.ceil(
+    filteredProducts.length / productsPerPage
+  );
   return (
     <>
       <div className="admin-toolbar">
-        <h1 style={{ margin: 0 }}>Products</h1>
 
-        <button className="btn btn-gold" onClick={openNew}>
-          + Add Product
-        </button>
+        <h1>Products</h1>
+
+        <div className="product-toolbar products-toolbar">
+          <div className="search-box">
+
+            <Icon.Search size={18} className="search-icon" />
+
+            <input
+              type="text"
+              placeholder="Search Product..."
+              className="toolbar-input"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
+
+          </div>
+
+          <select
+            className="toolbar-select"
+            value={categoryFilter}
+            onChange={(e) => {
+              setCategoryFilter(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">Category Filter</option>
+
+            {cats.map((cat) => (
+              <option
+                key={cat._id}
+                value={cat.categoryName}
+              >
+                {cat.categoryName}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="toolbar-select"
+            value={stockFilter}
+            onChange={(e) => {
+              setStockFilter(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">Stock Filter</option>
+            <option value="In Stock">In Stock</option>
+            <option value="Low Stock">Low Stock</option>
+            <option value="Out of Stock">Out of Stock</option>
+          </select>
+
+
+          <select
+            className="toolbar-select"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value="">Sort</option>
+            <option value="low">Price Low → High</option>
+            <option value="high">Price High → Low</option>
+            <option value="name">Product Name</option>
+          </select>
+
+          <button
+            className="btn btn-gold"
+            onClick={openNew}
+          >
+            + Add Product
+          </button>
+
+        </div>
+
       </div>
 
       <table className="admin-table">
         <thead>
           <tr>
             <th>Image</th>
-            <th>Name</th>
+            <th>Product Name</th>
             <th>Category</th>
             <th>Price</th>
-            <th>Stock</th>
+            <th>stock</th>
             <th>Status</th>
-            <th></th>
+            <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          {products.map((product) => (
+          {currentProducts.map((product) => (
             <tr key={product._id}>
               <td>
                 <img
@@ -307,7 +439,16 @@ export default function AdminProducts() {
               <td>{product.stock}</td>
 
               <td>
-                <span className="tag">{product.stockStatus}</span>
+                <span
+                  className={`tag ${product.stockStatus === "In Stock"
+                    ? "tag-green"
+                    : product.stockStatus === "Low Stock"
+                      ? "tag-orange"
+                      : "tag-red"
+                    }`}
+                >
+                  {product.stockStatus}
+                </span>
               </td>
 
               <td style={{ whiteSpace: "nowrap" }}>
@@ -344,6 +485,43 @@ export default function AdminProducts() {
           )}
         </tbody>
       </table>
+
+      <div className="pagination">
+
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
+          Previous
+        </button>
+
+        {Array.from(
+          { length: totalPages },
+          (_, index) => (
+            <button
+              key={index}
+              className={
+                currentPage === index + 1
+                  ? "active-page"
+                  : ""
+              }
+              onClick={() =>
+                setCurrentPage(index + 1)
+              }
+            >
+              {index + 1}
+            </button>
+          )
+        )}
+
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          Next
+        </button>
+
+      </div>
 
       {open && (
         <div

@@ -16,8 +16,9 @@ export default function AdminLayout({ children }) {
     { to: "/admin/users", label: "Users" },
     { to: "/admin/categories", label: "Categories" },
     { to: "/admin/coupons", label: "Coupons" },
+    { to: "/admin/reports", label: "Reports" },
+    { to: "/admin/settings", label: "Settings" },
   ];
-
   // Close the drawer whenever the route changes (mobile).
   useEffect(() => { setOpen(false); }, [location.pathname]);
 
@@ -46,8 +47,7 @@ export default function AdminLayout({ children }) {
         </button>
 
         <div className="logo">
-          <img src="/logo.png" alt="Sharanee" />
-          <b>ADMIN</b>
+          <img src="/logo.png" alt="Sharanee" className="admin-logo" />
         </div>
 
         <nav className="admin-nav">

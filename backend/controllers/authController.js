@@ -3,7 +3,7 @@ const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const sendEmail = require("../utils/sendEmail");
 const asyncHandler = require("../utils/asyncHandler");
-
+const Notification = require("../models/Notification");
 // @route  POST /api/auth/register
 const register = asyncHandler(async (req, res) => {
   const { fullName, email, phone, password } = req.body;
@@ -16,13 +16,23 @@ const register = asyncHandler(async (req, res) => {
   if (exists) {
     return res.status(400).json({ message: "An account with this email already exists" });
   }
-
   const user = await User.create({ fullName, email, phone, password });
+
+  await Notification.create({
+    title: "👤 New Customer",
+    message: `${user.fullName} has registered successfully.`,
+  });
 
   res.status(201).json({
     message: "Registration successful",
-    user: { id: user._id, fullName: user.fullName, email: user.email, role: user.role },
+    user: {
+      id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      role: user.role,
+    },
   });
+
 });
 
 // @route  POST /api/auth/login

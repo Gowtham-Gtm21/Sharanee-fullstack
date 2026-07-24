@@ -18,6 +18,7 @@ export default function Checkout() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const discount = state?.discount || 0;
+  const appliedCode = state?.appliedCode || "";
   const shipping = state?.shipping ?? (cartTotal > 999 ? 0 : 50);
 
   const [addresses, setAddresses] = useState([]);
@@ -32,7 +33,7 @@ export default function Checkout() {
       setAddresses(r.data.addresses || []);
       if (r.data.addresses?.length && !selected) setSelected(r.data.addresses[0]._id);
       if (!r.data.addresses?.length) setShowForm(true);
-    }).catch(() => {});
+    }).catch(() => { });
   };
 
   useEffect(() => { loadAddresses(); /* eslint-disable-next-line */ }, []);
@@ -69,6 +70,9 @@ export default function Checkout() {
         shippingAddress: selected,
         totalAmount: grand,
         paymentMethod: payment,
+        couponCode: appliedCode,
+        discount,
+        finalAmount: grand,
       });
       // Clear the cart on the server
       await Promise.all(cart.map((i) => cartApi.remove(i._id)));
@@ -171,7 +175,14 @@ export default function Checkout() {
               </div>
             ))}
             <div className="summary-row" style={{ marginTop: 10 }}><span>Subtotal</span><span>Rs. {cartTotal.toLocaleString("en-IN")}</span></div>
-            {discount > 0 && <div className="summary-row"><span>Discount</span><span style={{ color: "var(--danger)" }}>− Rs. {discount.toLocaleString("en-IN")}</span></div>}
+            {discount > 0 && (
+              <div className="summary-row">
+                <span>Coupon ({appliedCode})</span>
+                <span style={{ color: "var(--danger)" }}>
+                  − Rs. {discount.toLocaleString("en-IN")}
+                </span>
+              </div>
+            )}
             <div className="summary-row"><span>Shipping</span><span>{shipping === 0 ? "Free" : `Rs. ${shipping}`}</span></div>
             <div className="summary-row total"><span>Total</span><span>Rs. {grand.toLocaleString("en-IN")}</span></div>
             <button className="btn btn-gold btn-block" style={{ marginTop: 16 }} onClick={placeOrder} disabled={placing}>

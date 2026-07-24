@@ -5,7 +5,7 @@ import App from "./App";
 import { ToastProvider } from "./context/ToastContext";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
-
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./styles/global.css";
 import "./styles/components.css";
 import "./styles/enhance.css";

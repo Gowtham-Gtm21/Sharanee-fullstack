@@ -28,6 +28,10 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCategories from "./pages/admin/AdminCategories";
 import AdminCoupons from "./pages/admin/AdminCoupons";
+import AdminReports from "./pages/admin/AdminReports";
+import AdminSettings from "./pages/admin/AdminSettings";
+import SearchResults from "./pages/admin/SearchResults";
+import AdminNotifications from "./pages/admin/AdminNotifications";
 
 // Wrap a public page in the storefront layout (header + footer).
 const P = (el) => <Layout>{el}</Layout>;
@@ -69,6 +73,11 @@ export default function App() {
       <Route path="/admin/categories" element={A(<AdminCategories />)} />
       <Route path="/admin/coupons" element={A(<AdminCoupons />)} />
 
+      <Route path="/admin/reports" element={A(<AdminReports />)} />
+      <Route path="/admin/settings" element={A(<AdminSettings />)} />
+      <Route path="/admin/search" element={A(<SearchResults />)} />
+      <Route path="/admin/notifications" element={A(<AdminNotifications />)} />
+      
       <Route path="*" element={P(<NotFound />)} />
     </Routes>
   );

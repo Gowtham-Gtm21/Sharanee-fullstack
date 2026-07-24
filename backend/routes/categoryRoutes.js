@@ -17,7 +17,7 @@ router.post(
   "/",
   protect,
   admin,
-  categoryUpload.single("categoryImage"),
+  categoryUpload.array("categoryImages", 5),
   createCategory
 );
 
@@ -25,7 +25,7 @@ router.put(
   "/:id",
   protect,
   admin,
-  categoryUpload.single("categoryImage"),
+  categoryUpload.array("categoryImages", 5),
   updateCategory
 );
 
