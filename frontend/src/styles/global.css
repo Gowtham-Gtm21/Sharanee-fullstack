@@ -234,7 +234,7 @@ textarea {
 }
 
 .badge-sale {
-  background: var(--gold);
+  background: var(--danger);
 }
 
 .spinner {
