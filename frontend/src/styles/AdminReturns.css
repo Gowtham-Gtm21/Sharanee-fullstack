@@ -1,0 +1,248 @@
+/* =========================================
+   ADMIN RETURNS & REFUNDS
+========================================= */
+
+.admin-returns-page {
+    width: 100%;
+    padding: 4px 0 30px;
+}
+
+.admin-returns-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.admin-returns-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #3f2317;
+}
+
+.admin-returns-header p {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 0.95rem;
+}
+
+
+/* =========================================
+   RETURN & REFUND REPORT STYLE CARDS
+========================================= */
+
+.admin-returns-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin: 32px 0 30px;
+}
+
+.return-summary-card {
+    position: relative;
+    height: 165px;
+    background: #ffffff;
+
+    border: 1px solid #e4c27d;
+    border-radius: 16px;
+
+    padding: 25px 24px;
+
+    box-shadow: 0 8px 22px rgba(83, 48, 24, 0.06);
+
+    display: flex;
+    flex-direction: column;
+
+    transition: all 0.25s ease;
+}
+
+.return-summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(83, 48, 24, 0.11);
+}
+
+/* TITLE */
+
+.return-summary-card span {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.7px;
+    color: #936b54;
+    text-transform: uppercase;
+}
+
+/* NUMBER */
+
+.return-summary-card strong {
+    display: block;
+    margin-top: 18px;
+
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 700;
+
+    color: #4b2513;
+}
+
+/* BOTTOM DESCRIPTION */
+
+.return-summary-card small {
+    margin-top: auto;
+
+    font-size: 12px;
+    font-weight: 400;
+
+    color: #936b54;
+}
+
+/* GOLD ICON - TOP RIGHT */
+
+.return-card-icon {
+    position: absolute;
+    top: 21px;
+    right: 22px;
+
+    color: #d5a51f;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+    .admin-returns-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-returns-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* TABLE */
+
+.admin-returns-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+
+    background: #ffffff;
+    border: 1px solid #eee5da;
+    border-radius: 14px;
+
+    box-shadow: 0 4px 15px rgba(63, 35, 23, 0.06);
+}
+
+.admin-returns-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1050px;
+}
+
+.admin-returns-table th {
+    padding: 15px 16px;
+
+    background: #f5ecdc;
+    border-bottom: 1px solid #eee5da;
+
+    color: #5a3a2d;
+    font-size: 0.83rem;
+    font-weight: 700;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.admin-returns-table td {
+    padding: 16px;
+
+    border-bottom: 1px solid #f1ebe4;
+
+    color: #4c403b;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+.admin-returns-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-returns-table tbody tr:hover {
+    background: #fdfbf8;
+}
+
+
+/* CUSTOMER */
+
+.admin-returns-table td:first-child strong {
+    display: block;
+    color: #3f2317;
+    margin-bottom: 4px;
+}
+
+.admin-returns-table td:first-child small {
+    display: block;
+    color: #888;
+    font-size: 0.78rem;
+}
+
+
+/* RETURN STATUS */
+
+.return-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+    border-radius: 20px;
+
+    background: #fff4dc;
+    color: #9a6815;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+
+/* MANAGE BUTTON */
+
+.admin-returns-table .btn {
+    min-width: 85px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+}
+
+
+/* EMPTY */
+
+.admin-returns-empty {
+    padding: 50px 20px;
+
+    background: #ffffff;
+    border: 1px solid #eee5da;
+    border-radius: 14px;
+
+    text-align: center;
+    color: #888;
+
+    box-shadow: 0 4px 15px rgba(63, 35, 23, 0.06);
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+    .admin-returns-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-returns-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .admin-returns-summary {
+        grid-template-columns: 1fr;
+    }
+}

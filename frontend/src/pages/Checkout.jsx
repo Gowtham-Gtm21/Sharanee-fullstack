@@ -17,8 +17,10 @@ export default function Checkout() {
   const toast = useToast();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const discount = state?.discount || 0;
-  const appliedCode = state?.appliedCode || "";
+  const [discount, setDiscount] = useState(state?.discount || 0);
+  const [appliedCode, setAppliedCode] = useState(
+    state?.appliedCode || ""
+  );
   const shipping = state?.shipping ?? (cartTotal > 999 ? 0 : 50);
 
   const [addresses, setAddresses] = useState([]);
@@ -27,7 +29,11 @@ export default function Checkout() {
   const [form, setForm] = useState(EMPTY);
   const [payment, setPayment] = useState("COD");
   const [placing, setPlacing] = useState(false);
-
+  const removeCoupon = () => {
+    setAppliedCode("");
+    setDiscount(0);
+    toast.success("Coupon removed.");
+  };
   const loadAddresses = () => {
     addressApi.get(user.id).then((r) => {
       setAddresses(r.data.addresses || []);
@@ -38,7 +44,7 @@ export default function Checkout() {
 
   useEffect(() => { loadAddresses(); /* eslint-disable-next-line */ }, []);
 
-  const priceOf = (p) => (p.discountPrice && p.discountPrice > 0 ? p.discountPrice : p.price);
+  const priceOf = (p) => p.finalPrice || p.price;
   const grand = Math.max(0, cartTotal - discount) + shipping;
 
   const saveAddress = async (e) => {
@@ -63,6 +69,8 @@ export default function Checkout() {
         product: i.product._id,
         quantity: i.quantity,
         price: priceOf(i.product),
+        selectedColor: i.selectedColor || "",
+        selectedSize: i.selectedSize || "",
       }));
       const { data } = await orderApi.place({
         user: user.id,
@@ -168,20 +176,50 @@ export default function Checkout() {
               <div className="order-item" key={i._id}>
                 <img src={i.product.images?.[0] ? imageUrl(i.product.images[0]) : "https://placehold.co/56x70/efe6d5/3f2317?text=S"} alt="" />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: "0.86rem" }}>{i.product.productName}</div>
-                  <small style={{ color: "var(--muted)" }}>Qty: {i.quantity}</small>
+                  <div style={{ fontSize: "0.86rem" }}>
+                    {i.product.productName}
+                  </div>
+
+                  <div
+                    style={{
+                      color: "var(--muted)",
+                      fontSize: "0.82rem",
+                      marginTop: 4,
+                    }}
+                  >
+                    <div>Qty: {i.quantity}</div>
+
+                    {i.selectedColor && (
+                      <div>Color: {i.selectedColor}</div>
+                    )}
+
+                    {i.selectedSize && (
+                      <div>Size: {i.selectedSize}</div>
+                    )}
+                  </div>
                 </div>
                 <div className="price" style={{ fontSize: "0.86rem" }}>Rs. {(priceOf(i.product) * i.quantity).toLocaleString("en-IN")}</div>
               </div>
             ))}
             <div className="summary-row" style={{ marginTop: 10 }}><span>Subtotal</span><span>Rs. {cartTotal.toLocaleString("en-IN")}</span></div>
             {discount > 0 && (
-              <div className="summary-row">
-                <span>Coupon ({appliedCode})</span>
-                <span style={{ color: "var(--danger)" }}>
-                  − Rs. {discount.toLocaleString("en-IN")}
-                </span>
-              </div>
+              <>
+                <div className="summary-row">
+                  <span>Coupon ({appliedCode})</span>
+
+                  <span style={{ color: "var(--danger)" }}>
+                    - Rs. {discount.toLocaleString("en-IN")}
+                  </span>
+                </div>
+
+                <button
+                  className="btn btn-outline"
+                  style={{ marginTop: 8 }}
+                  onClick={removeCoupon}
+                >
+                  Remove Coupon
+                </button>
+              </>
             )}
             <div className="summary-row"><span>Shipping</span><span>{shipping === 0 ? "Free" : `Rs. ${shipping}`}</span></div>
             <div className="summary-row total"><span>Total</span><span>Rs. {grand.toLocaleString("en-IN")}</span></div>

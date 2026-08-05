@@ -72,12 +72,21 @@ export const productApi = {
 };
 
 // ---------- Cart ----------
+// ---------- Cart ----------
 export const cartApi = {
-  add: (user, product, quantity = 1) =>
+  add: (
+    user,
+    product,
+    quantity = 1,
+    selectedColor = null,
+    selectedSize = null
+  ) =>
     api.post("/cart", {
       user,
       product,
       quantity,
+      selectedColor,
+      selectedSize,
     }),
 
   get: (userId) => api.get(`/cart/${userId}`),
@@ -89,6 +98,8 @@ export const cartApi = {
 
   remove: (id) => api.delete(`/cart/${id}`),
 };
+
+
 
 // ---------- Wishlist ----------
 export const wishlistApi = {
@@ -142,15 +153,26 @@ export const orderApi = {
 
 // ---------- Reviews ----------
 export const reviewApi = {
+  // Customer
   add: (data) => api.post("/reviews", data),
 
   forProduct: (productId) =>
     api.get(`/reviews/${productId}`),
 
+  canReview: (productId) =>
+    api.get(`/reviews/can-review/${productId}`),
+
   update: (id, data) =>
     api.put(`/reviews/${id}`, data),
 
-  remove: (id) => api.delete(`/reviews/${id}`),
+  remove: (id) =>
+    api.delete(`/reviews/${id}`),
+
+  // Admin
+  getAll: () => api.get("/reviews"),
+
+  updateStatus: (id, status) =>
+    api.put(`/reviews/${id}/status`, { status }),
 };
 
 // ---------- Coupons ----------
@@ -169,20 +191,41 @@ export const couponApi = {
     api.put(`/coupons/${id}`, data),
 
   remove: (id) => api.delete(`/coupons/${id}`),
+
+  toggle: (id) => api.put(`/coupons/toggle/${id}`),
 };
 
-// ---------- Returns ----------
+
+export const discountApi = {
+  list: () => api.get("/discounts"),
+
+  create: (data) => api.post("/discounts", data),
+
+  update: (id, data) => api.put(`/discounts/${id}`, data),
+
+  remove: (id) => api.delete(`/discounts/${id}`),
+
+  toggle: (id) => api.put(`/discounts/toggle/${id}`),
+};
+
+// ---------- Returns & Refunds ----------
 export const returnApi = {
-  create: (data) => api.post("/returns", data),
+  // Customer - create return request
+  create: (data) =>
+    api.post("/returns", data),
 
-  mine: (userId) => api.get(`/returns/${userId}`),
+  // Customer - get own return/refund requests
+  myReturns: () =>
+    api.get("/returns/my"),
 
-  all: () => api.get("/returns"),
+  // Admin - get all return/refund requests
+  getAll: () =>
+    api.get("/returns"),
 
+  // Admin - update return/refund
   updateStatus: (id, data) =>
     api.put(`/returns/${id}`, data),
 };
-
 // ---------- Invoice ----------
 export const invoiceApi = {
   /*
@@ -228,6 +271,8 @@ export const settingApi = {
   update: (data) =>
     api.put("/settings", data),
 };
+
+
 
 // ---------- Offers ----------
 export const offerApi = {

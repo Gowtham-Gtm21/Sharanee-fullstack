@@ -3,7 +3,8 @@ const path = require("path");
 const Product = require("../models/Product");
 const asyncHandler = require("../utils/asyncHandler");
 const Notification = require("../models/Notification");
-
+const Discount = require("../models/Discount");
+const Category = require("../models/Category");
 const SORTS = {
   "price-asc": { price: 1 },
   "price-desc": { price: -1 },
@@ -142,13 +143,26 @@ const listProducts = asyncHandler(async (req, res) => {
   const filter = {};
 
   if (search) {
-    filter.$text = {
-      $search: search.trim(),
-    };
+    const searchTerm = search.trim();
+
+    filter.$or = [
+      { productName: { $regex: searchTerm, $options: "i" } },
+      { fabric: { $regex: searchTerm, $options: "i" } },
+      { occasion: { $regex: searchTerm, $options: "i" } },
+      { pattern: { $regex: searchTerm, $options: "i" } },
+    ];
   }
 
   if (category) {
-    filter.category = category;
+
+
+    const categoryDoc = await Category.findOne({
+      categoryName: category,
+    });
+
+    if (categoryDoc) {
+      filter.category = categoryDoc._id;
+    }
   }
 
   if (fabric) {
@@ -156,9 +170,8 @@ const listProducts = asyncHandler(async (req, res) => {
   }
 
   if (color) {
-    filter.color = color;
+    filter["colorVariants.colorName"] = color;
   }
-
   if (occasion) {
     filter.occasion = occasion;
   }
@@ -198,14 +211,81 @@ const listProducts = asyncHandler(async (req, res) => {
       delete filter.price;
     }
   }
-
   const products = await Product.find(filter)
     .populate("category", "categoryName")
     .sort(SORTS[sort] || { createdAt: -1 });
 
+  const today = new Date();
+
+  const discounts = await Discount.find({
+    active: true,
+    startDate: { $lte: today },
+    endDate: { $gte: today },
+  });
+
+  const updatedProducts = products.map((product) => {
+
+    let finalPrice = product.price;
+
+    let appliedDiscount = null;
+
+    const discount = discounts.find((d) => {
+
+      if (
+        d.applyTo === "Product" &&
+        d.product &&
+        d.product.toString() === product._id.toString()
+      ) {
+        return true;
+      }
+
+      if (
+        d.applyTo === "Category" &&
+        d.category &&
+        product.category &&
+        d.category.toString() === product.category._id.toString()
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    if (discount) {
+
+      if (discount.discountType === "Percentage") {
+
+        finalPrice =
+          product.price -
+          (product.price * discount.discountValue) / 100;
+
+      } else {
+
+        finalPrice =
+          product.price - discount.discountValue;
+
+      }
+
+      if (finalPrice < 0) finalPrice = 0;
+
+      appliedDiscount = {
+        offerName: discount.offerName,
+        discountType: discount.discountType,
+        discountValue: discount.discountValue,
+      };
+    }
+
+    return {
+      ...product.toObject(),
+      originalPrice: product.price,
+      finalPrice,
+      discount: appliedDiscount,
+    };
+  });
+
   res.json({
-    products,
-    count: products.length,
+    products: updatedProducts,
+    count: updatedProducts.length,
   });
 });
 
@@ -263,10 +343,20 @@ const getProduct = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
   const body = prepareProductBody(req.body);
 
-  if (req.files?.length) {
-    body.images = filesToPaths(req.files);
+  if (body.colorVariants) {
+    body.colorVariants = JSON.parse(body.colorVariants);
   }
 
+  if (req.files?.images) {
+    body.images = filesToPaths(req.files.images);
+  }
+  if (body.colorVariants) {
+    body.colorVariants.forEach((variant, index) => {
+      const files = req.files?.[`colorImages_${index}`] || [];
+
+      variant.images = files.map((file) => file.path);
+    });
+  }
   const product = await Product.create(body);
 
   const populatedProduct = await Product.findById(product._id).populate(
@@ -294,6 +384,26 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   const body = prepareProductBody(req.body);
 
+
+  console.log("PRODUCT FILES:", req.files);
+
+  if (body.colorVariants) {
+    body.colorVariants = JSON.parse(body.colorVariants);
+  }
+
+  if (body.colorVariants) {
+    body.colorVariants.forEach((variant, index) => {
+      const files = req.files?.[`colorImages_${index}`] || [];
+
+      if (files.length > 0) {
+        variant.images = files.map((file) => file.path);
+      } else {
+        variant.images =
+          product.colorVariants?.[index]?.images || [];
+      }
+    });
+  }
+
   // "existingImages" - existing image paths the admin chose to keep in the
   // form (JSON array string). If absent, all current images are retained.
   let keptImages = product.images;
@@ -309,7 +419,9 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   delete body.existingImages;
 
-  const newImages = req.files?.length ? filesToPaths(req.files) : [];
+  const newImages = req.files?.images
+    ? filesToPaths(req.files.images)
+    : [];
   const removedImages = product.images.filter(
     (image) => !keptImages.includes(image)
   );

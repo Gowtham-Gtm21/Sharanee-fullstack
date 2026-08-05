@@ -14,7 +14,8 @@ export default function Cart() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const priceOf = (p) => (p.discountPrice && p.discountPrice > 0 ? p.discountPrice : p.price);
+  const priceOf = (p) =>
+    p.finalPrice || p.price;
 
   const applyCoupon = async () => {
     if (!code.trim()) return;
@@ -63,7 +64,15 @@ export default function Cart() {
                 {cart.map((item) => {
                   const p = item.product;
                   if (!p) return null;
-                  const img = p.images?.[0] ? imageUrl(p.images[0]) : "https://placehold.co/80x100/efe6d5/3f2317?text=S";
+                  const selectedVariant = p.colorVariants?.find(
+                    (variant) => variant.colorName === item.selectedColor
+                  );
+
+                  const img = selectedVariant?.images?.[0]
+                    ? imageUrl(selectedVariant.images[0])
+                    : p.colorVariants?.[0]?.images?.[0]
+                      ? imageUrl(p.colorVariants[0].images[0])
+                      : "https://placehold.co/80x100/efe6d5/3f2317?text=S";
                   return (
                     <tr key={item._id}>
                       <td>
@@ -71,12 +80,38 @@ export default function Cart() {
                           <img src={img} alt={p.productName} />
                           <div>
                             <Link to={`/product/${p._id}`}><b>{p.productName}</b></Link>
-                            {p.color && <small>Color: {p.color}</small>}
+                            {item.selectedColor && (
+                              <small>
+                                Color:
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    width: "12px",
+                                    height: "12px",
+                                    borderRadius: "50%",
+                                    margin: "0 6px",
+                                    background: item.selectedColor.toLowerCase(),
+                                    border: "1px solid #ccc",
+                                    verticalAlign: "middle",
+                                  }}
+                                />
+                                {item.selectedColor}
+                              </small>
+                            )}
+
+                            {item.selectedSize && (
+                              <small>
+                                Size: {item.selectedSize}
+                              </small>
+                            )}
+
                             <small>by Sharanee</small>
                           </div>
                         </div>
                       </td>
-                      <td className="price">Rs. {priceOf(p).toLocaleString("en-IN")}</td>
+                      <td className="price">
+                        Rs. {priceOf(p).toLocaleString("en-IN")}
+                      </td>
                       <td>
                         <div className="qty">
                           <button onClick={() => updateQty(item._id, Math.max(1, item.quantity - 1))}>−</button>

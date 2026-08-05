@@ -3,20 +3,46 @@ const asyncHandler = require("../utils/asyncHandler");
 
 // @route  POST /api/cart   body: { user, product, quantity }
 const addToCart = asyncHandler(async (req, res) => {
-  const { user, product, quantity = 1 } = req.body;
+  const {
+    user,
+    product,
+    quantity = 1,
+    selectedColor = "",
+    selectedSize = "",
+  } = req.body;
+
   if (!user || !product) {
-    return res.status(400).json({ message: "user and product are required" });
+    return res
+      .status(400)
+      .json({
+        message: "user and product are required",
+      });
   }
 
-  let item = await Cart.findOne({ user, product });
+  let item = await Cart.findOne({
+    user,
+    product,
+    selectedColor,
+    selectedSize,
+  });
+
   if (item) {
     item.quantity += Number(quantity) || 1;
     await item.save();
   } else {
-    item = await Cart.create({ user, product, quantity });
+
+    item = await Cart.create({
+      user,
+      product,
+      quantity,
+      selectedColor,
+      selectedSize,
+    });
+    
   }
 
   await item.populate("product");
+
   res.status(201).json({ item });
 });
 

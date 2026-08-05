@@ -19,11 +19,20 @@ export function AuthProvider({ children }) {
     setReady(true);
   }, []);
 
-  const login = async (email, password) => {
-    const { data } = await authApi.login({ email, password });
+  const login = async (identifier, password) => {
+    const { data } = await authApi.login({
+      identifier,
+      password,
+    });
+
     localStorage.setItem("sharanee_token", data.token);
-    localStorage.setItem("sharanee_user", JSON.stringify(data.user));
+    localStorage.setItem(
+      "sharanee_user",
+      JSON.stringify(data.user)
+    );
+
     setUser(data.user);
+
     return data.user;
   };
 

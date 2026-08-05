@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const Order = require("../models/Order");
 const Product = require("../models/Product");
+const Coupon = require("../models/Coupon");
 const Notification = require("../models/Notification");
 const asyncHandler = require("../utils/asyncHandler");
 
@@ -216,17 +217,16 @@ const placeOrder = asyncHandler(async (req, res) => {
     if (Number(product.stock || 0) < Number(item.quantity)) {
       return res.status(400).json({
         success: false,
-        message: `Insufficient stock for ${
-          product.productName || "selected product"
-        }`,
+        message: `Insufficient stock for ${product.productName || "selected product"
+          }`,
       });
     }
   }
 
   const calculatedFinalAmount =
     finalAmount !== undefined &&
-    finalAmount !== null &&
-    Number.isFinite(Number(finalAmount))
+      finalAmount !== null &&
+      Number.isFinite(Number(finalAmount))
       ? Math.max(0, Number(finalAmount))
       : Math.max(0, parsedTotalAmount - parsedDiscount);
 
@@ -234,6 +234,9 @@ const placeOrder = asyncHandler(async (req, res) => {
     product: item.product,
     quantity: Number(item.quantity),
     price: Number(item.price),
+
+    selectedColor: item.selectedColor || "",
+    selectedSize: item.selectedSize || "",
   }));
 
   const order = await Order.create({
@@ -254,7 +257,19 @@ const placeOrder = asyncHandler(async (req, res) => {
      * "Placed" tracking entry. Therefore it is not manually pushed here.
      */
   });
+  if (couponCode) {
+    const coupon = await Coupon.findOne({
+      code: couponCode.toUpperCase()
+    });
 
+    if (coupon) {
+      coupon.usedCount += 1;
+      coupon.remainingCount =
+        coupon.maxUses - coupon.usedCount;
+
+      await coupon.save();
+    }
+  }
   try {
     await Promise.all(
       normalizedItems.map((item) =>
@@ -492,10 +507,10 @@ const getTracking = asyncHandler(async (req, res) => {
 
   const trackingHistory = Array.isArray(order.trackingHistory)
     ? [...order.trackingHistory].sort(
-        (firstEntry, secondEntry) =>
-          new Date(firstEntry.date).getTime() -
-          new Date(secondEntry.date).getTime()
-      )
+      (firstEntry, secondEntry) =>
+        new Date(firstEntry.date).getTime() -
+        new Date(secondEntry.date).getTime()
+    )
     : [];
 
   return res.status(200).json({
@@ -670,7 +685,7 @@ const updateTracking = asyncHandler(async (req, res) => {
   ) {
     const latestHistory =
       order.trackingHistory[
-        order.trackingHistory.length - 1
+      order.trackingHistory.length - 1
       ];
 
     if (latestHistory.status === status) {

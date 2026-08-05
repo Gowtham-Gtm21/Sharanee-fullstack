@@ -15,9 +15,9 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Account from "./pages/Account";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Blog from "./pages/Blog";
+{/*import About from "./pages/About"; */ }
+import Contact from "./pages/Contact"; {/*}
+import Blog from "./pages/Blog";*/}
 import BlogDetail from "./pages/BlogDetail";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +32,10 @@ import AdminReports from "./pages/admin/AdminReports";
 import AdminSettings from "./pages/admin/AdminSettings";
 import SearchResults from "./pages/admin/SearchResults";
 import AdminNotifications from "./pages/admin/AdminNotifications";
+import AdminDiscounts from "./pages/admin/AdminDiscounts";
+import AdminReviews from "./pages/admin/AdminReviews";
+import AdminReturns from "./pages/admin/AdminReturns";
+
 
 // Wrap a public page in the storefront layout (header + footer).
 const P = (el) => <Layout>{el}</Layout>;
@@ -45,9 +49,9 @@ export default function App() {
       <Route path="/" element={P(<Home />)} />
       <Route path="/shop" element={P(<Shop />)} />
       <Route path="/product/:id" element={P(<ProductDetail />)} />
-      <Route path="/about" element={P(<About />)} />
+      {/* <Route path="/about" element={P(<About />)} /> */}
       <Route path="/contact" element={P(<Contact />)} />
-      <Route path="/blog" element={P(<Blog />)} />
+      {/* <Route path="/blog" element={P(<Blog />)} /> */}
       <Route path="/blog/:slug" element={P(<BlogDetail />)} />
       <Route path="/wishlist" element={P(<Wishlist />)} />
 
@@ -77,7 +81,11 @@ export default function App() {
       <Route path="/admin/settings" element={A(<AdminSettings />)} />
       <Route path="/admin/search" element={A(<SearchResults />)} />
       <Route path="/admin/notifications" element={A(<AdminNotifications />)} />
-      
+      <Route path="/admin/discounts" element={A(<AdminDiscounts />)} />
+      <Route path="/admin/reviews" element={A(<AdminReviews />)} />
+      <Route path="/admin/returns" element={A(<AdminReturns />)} />
+
+
       <Route path="*" element={P(<NotFound />)} />
     </Routes>
   );

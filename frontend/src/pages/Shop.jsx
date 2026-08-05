@@ -116,14 +116,27 @@ export default function Shop() {
 
   // Derive option lists from the full catalogue so options never disappear.
   const opt = (arr) => [...new Set(arr.filter(Boolean))].map((v) => ({ value: v, label: v }));
-  const colorOpts = useMemo(() => opt(allProducts.map((p) => p.color)), [allProducts]);
+  const colorOpts = useMemo(
+    () =>
+      opt(
+        allProducts.flatMap((p) => [
+          p.color,
+          ...(p.colorVariants?.map((v) => v.colorName) || []),
+        ])
+      ),
+    [allProducts]
+  );
   const fabricOpts = useMemo(() => opt(allProducts.map((p) => p.fabric)), [allProducts]);
   const tagOpts = useMemo(() => opt(allProducts.map((p) => p.occasion)), [allProducts]);
-  const catOpts = cats.map((c) => ({ value: c._id, label: c.categoryName }));
-
+  const catOpts = cats.map((c) => ({
+    value: c.categoryName,
+    label: c.categoryName,
+  }));
   const circles = cats.length
     ? cats.map((c, i) => ({
-      id: c._id, name: c.categoryName, img: c.categoryImages?.length
+      id: c.categoryName,
+      name: c.categoryName,
+      img: c.categoryImages?.length
         ? imageUrl(
           c.categoryImages[currentImage[c._id] || 0]
         )
@@ -229,7 +242,13 @@ export default function Shop() {
           </div>
         ) : (
           <div className="grid-cards">
-            {visible.map((p) => <ProductCard key={p._id} product={p} />)}
+            {visible.map((p) => (
+              <ProductCard
+                key={p._id}
+                product={p}
+                selectedColor={color}
+              />
+            ))}
           </div>
         )}
       </div>

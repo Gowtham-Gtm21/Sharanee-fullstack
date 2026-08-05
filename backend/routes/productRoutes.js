@@ -26,7 +26,32 @@ router.post(
   "/",
   protect,
   admin,
-  productUpload.array("images", 6),
+  productUpload.fields([
+    {
+      name: "images",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_0",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_1",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_2",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_3",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_4",
+      maxCount: 5,
+    },
+  ]),
   createProduct
 );
 
@@ -36,7 +61,32 @@ router.put(
   "/:id",
   protect,
   admin,
-  productUpload.array("images", 6),
+  productUpload.fields([
+    {
+      name: "images",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_0",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_1",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_2",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_3",
+      maxCount: 5,
+    },
+    {
+      name: "colorImages_4",
+      maxCount: 5,
+    },
+  ]),
   updateProduct
 );
 

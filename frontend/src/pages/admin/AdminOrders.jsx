@@ -77,7 +77,7 @@ export default function AdminOrders() {
 
       toast.error(
         error?.response?.data?.message ||
-          "Could not load orders."
+        "Could not load orders."
       );
     } finally {
       setLoading(false);
@@ -168,9 +168,9 @@ export default function AdminOrders() {
         currentOrders.map((order) =>
           order._id === selectedOrder._id
             ? {
-                ...order,
-                ...updatedOrder,
-              }
+              ...order,
+              ...updatedOrder,
+            }
             : order
         )
       );
@@ -192,7 +192,7 @@ export default function AdminOrders() {
 
       toast.error(
         error?.response?.data?.message ||
-          "Could not update order."
+        "Could not update order."
       );
     } finally {
       setSaving(false);
@@ -425,8 +425,8 @@ export default function AdminOrders() {
                   Rs.{" "}
                   {Number(
                     order.finalAmount ??
-                      order.totalAmount ??
-                      0
+                    order.totalAmount ??
+                    0
                   ).toLocaleString("en-IN")}
                 </td>
 
@@ -621,8 +621,8 @@ export default function AdminOrders() {
                   value={
                     selectedOrder.deliveryDate
                       ? String(
-                          selectedOrder.deliveryDate
-                        ).substring(0, 10)
+                        selectedOrder.deliveryDate
+                      ).substring(0, 10)
                       : ""
                   }
                   onChange={(event) =>
@@ -641,8 +641,8 @@ export default function AdminOrders() {
                   readOnly
                   value={`₹ ${Number(
                     selectedOrder.finalAmount ??
-                      selectedOrder.totalAmount ??
-                      0
+                    selectedOrder.totalAmount ??
+                    0
                   ).toLocaleString("en-IN")}`}
                 />
               </div>
@@ -673,6 +673,60 @@ export default function AdminOrders() {
                 </select>
               </div>
             </div>
+
+            <h3 style={{ marginBottom: "12px" }}>
+              Ordered Products
+            </h3>
+
+            {selectedOrder.items?.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "12px 0",
+                  borderBottom: "1px solid #eee",
+                }}
+              >
+                <div>
+                  <b>{item.product?.productName}</b>
+
+                  <div style={{ marginTop: 6 }}>
+                    Qty: {item.quantity}
+                  </div>
+
+                  {item.selectedColor && (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        marginTop: 6,
+                      }}
+                    >
+                      <span>Color:</span>
+
+                      <span
+                        style={{
+                          width: 14,
+                          height: 14,
+                          borderRadius: "50%",
+                          background: item.selectedColor.toLowerCase(),
+                          border: "1px solid #ccc",
+                        }}
+                      />
+
+                      {item.selectedColor}
+                    </div>
+                  )}
+                </div>
+
+                <b>
+                  ₹{item.price?.toLocaleString("en-IN")}
+                </b>
+              </div>
+            ))}
 
             <div className="modal-actions">
               <button

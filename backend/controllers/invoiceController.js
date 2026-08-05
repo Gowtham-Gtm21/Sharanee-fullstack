@@ -143,8 +143,7 @@ const getShippingAddressLines = (address) => {
 
   if (cityParts.length > 0 || postalCode) {
     lines.push(
-      `${cityParts.join(", ")}${
-        postalCode ? ` - ${postalCode}` : ""
+      `${cityParts.join(", ")}${postalCode ? ` - ${postalCode}` : ""
       }`
     );
   }
@@ -408,9 +407,13 @@ const drawProductRow = ({
     product.fabric
       ? `Fabric: ${product.fabric}`
       : "",
-    product.color
-      ? `Color: ${product.color}`
-      : "",
+
+    item.selectedColor
+      ? `Color: ${item.selectedColor}`
+      : product.color
+        ? `Color: ${product.color}`
+        : "",
+
     product.size?.length
       ? `Size: ${product.size.join(", ")}`
       : "",
@@ -951,7 +954,7 @@ const downloadInvoice = asyncHandler(
 
     const finalAmount = Number(
       order.finalAmount ||
-        Math.max(0, subtotal - discount)
+      Math.max(0, subtotal - discount)
     );
 
     const shippingCharge = Math.max(
@@ -996,6 +999,11 @@ const downloadInvoice = asyncHandler(
     const totalRows = [
       ["Subtotal", subtotal],
       ["Shipping Charge", shippingCharge],
+
+      ...(order.couponCode
+        ? [["Coupon", order.couponCode]]
+        : []),
+
       ["Discount", discount],
     ];
 

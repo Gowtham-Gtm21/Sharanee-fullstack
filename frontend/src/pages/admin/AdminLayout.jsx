@@ -16,7 +16,10 @@ export default function AdminLayout({ children }) {
     { to: "/admin/users", label: "Users" },
     { to: "/admin/categories", label: "Categories" },
     { to: "/admin/coupons", label: "Coupons" },
+    { to: "/admin/discounts", label: "Discounts" },
+    { to: "/admin/reviews", label: "Reviews" },
     { to: "/admin/reports", label: "Reports" },
+    { to: "/admin/returns", label: "Returns & Refunds" },
     { to: "/admin/settings", label: "Settings" },
   ];
   // Close the drawer whenever the route changes (mobile).

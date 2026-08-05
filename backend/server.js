@@ -9,6 +9,8 @@ const { notFound, errorHandler } = require("./middleware/errorHandler");
 const searchRoutes = require("./routes/searchRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const settingRoutes = require("./routes/settingRoutes");
+const discountRoutes = require("./routes/discountRoutes");
+const returnRoutes = require("./routes/returnRoutes");
 connectDB();
 
 const app = express();
@@ -56,6 +58,11 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/admin/search", searchRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/settings", settingRoutes);
+app.use("/api/discounts", discountRoutes);
+app.use("/api/returns", returnRoutes);
+
+
+
 app.use(notFound);
 app.use(errorHandler);
 

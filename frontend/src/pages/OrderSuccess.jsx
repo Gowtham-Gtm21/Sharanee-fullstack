@@ -8,7 +8,7 @@ export default function OrderSuccess() {
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
-    orderApi.get(id).then((r) => setOrder(r.data.order)).catch(() => {});
+    orderApi.get(id).then((r) => setOrder(r.data.order)).catch(() => { });
   }, [id]);
 
   return (
@@ -22,7 +22,12 @@ export default function OrderSuccess() {
         {order && (
           <div style={{ margin: "20px auto", maxWidth: 360, textAlign: "left" }} className="order-card">
             <div className="summary-row"><span>Order ID</span><span>#{order._id.slice(-8).toUpperCase()}</span></div>
-            <div className="summary-row"><span>Amount</span><span className="price">Rs. {order.totalAmount?.toLocaleString("en-IN")}</span></div>
+            <div className="summary-row">
+              <span>Amount</span>
+              <span className="price">
+                Rs. {(order.finalAmount || order.totalAmount)?.toLocaleString("en-IN")}
+              </span>
+            </div>
             <div className="summary-row"><span>Payment</span><span>{order.paymentMethod}</span></div>
             <div className="summary-row"><span>Status</span><span>{order.orderStatus}</span></div>
           </div>

@@ -4,8 +4,13 @@ import { productApi } from "../api/endpoints";
 import { imageUrl } from "../api/client";
 import { Icon } from "./Icons";
 
-const POPULAR = ["Saree", "Banarasi", "Silk", "Bridal"];
-
+const POPULAR = [
+  "Cotton",
+  "Silk",
+  "Mermaid",
+  "Fish Cut",
+  "Bridal",
+];
 export default function SearchOverlay({ onClose }) {
   const [q, setQ] = useState("");
   const [results, setResults] = useState([]);
@@ -46,18 +51,35 @@ export default function SearchOverlay({ onClose }) {
   };
 
   return (
-    <div className="search-overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <button className="search-x" onClick={onClose} aria-label="Close search"><Icon.Close size={26} /></button>
-
+    <div
+      className="search-overlay"
+      onMouseDown={(e) =>
+        e.target === e.currentTarget && onClose()
+      }
+    >
       <div className="search-panel">
-        <span className="search-eyebrow">Search Sharanee</span>
+
+        {/* CLOSE BUTTON */}
+        <button
+          className="search-x"
+          onClick={onClose}
+          aria-label="Close search"
+        >
+          <Icon.Close size={22} />
+        </button>
+
+        <span className="search-eyebrow">
+          Search Sharanee
+        </span>
+
+        
         <form className="search-box" onSubmit={(e) => { e.preventDefault(); submit(); }}>
           <Icon.Search size={22} />
           <input
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search for sarees, Silk Sarees, Designer Sarees..."
+            placeholder="Search for inskirts..."
             aria-label="Search products"
           />
           {q && <button type="button" className="search-clear" onClick={() => setQ("")}><Icon.Close size={18} /></button>}

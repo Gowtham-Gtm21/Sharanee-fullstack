@@ -8,11 +8,26 @@ import { Icon } from "../components/Icons";
 const HERO =
   "https://ps-vastra.myshopify.com/cdn/shop/files/Adobe_Express_-_file_1.png?crop=center&height=870&v=1777716059&width=882";
 const CAT_FALLBACK = [
-  { name: "Saree Inskirt", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/Saree_f21a0b8d-af7e-4925-aa0c-6795f26f90d3.webp?v=1775470531" },
-  { name: "Designer Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/lehnga_Set.webp?v=1773202620" },
-  { name: "Cotton Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/indo_western.webp?v=1773202846" },
-  { name: "Bridal Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/gown.webp?v=1773202521" },
-  { name: "Silk Sarees", img: "https://ps-vastra.myshopify.com/cdn/shop/collections/Suit_Set.webp?v=1773202954" },
+  {
+    name: "Cotton Inskirts",
+    img: "/images/cotton-inskirt.png",
+  },
+  {
+    name: "Silk Inskirts",
+    img: "/images/silk-inskirt.jpeg",
+  },
+  {
+    name: "Mermaid Inskirts",
+    img: "/images/mermaid-inskirt.jpg",
+  },
+  {
+    name: "Fish Cut Inskirts",
+    img: "/images/fishcut-inskirt.png",
+  },
+  {
+    name: "Bridal Inskirts",
+    img: "/images/bridal-inskirt.jpg",
+  },
 ];
 const SPLIT1 = "https://ps-vastra.myshopify.com/cdn/shop/files/banner-2.webp?crop=center&height=519&v=1773204920&width=832";
 const SPLIT2 = "https://ps-vastra.myshopify.com/cdn/shop/files/3.webp?crop=center&height=642&v=1773206251&width=496";
@@ -51,11 +66,28 @@ export default function Home() {
   const mostLoved = featured.length ? featured : latest.slice(0, 4);
   const vogue = latest.slice(4, 8);
 
-  const catTiles = (cats.length ? cats.slice(0, 5).map((c) => ({
-    name: c.categoryName,
-    img: c.categoryImage ? imageUrl(c.categoryImage) : null,
-  })) : CAT_FALLBACK);
+  const categoryOrder = [
+    "Cotton Inskirts",
+    "Silk Inskirts",
+    "Mermaid Inskirts",
+    "Fish Cut Inskirts",
+    "Bridal Inskirts",
+  ];
 
+  const catTiles = cats
+    .slice()
+    .sort(
+      (a, b) =>
+        categoryOrder.indexOf(a.categoryName) -
+        categoryOrder.indexOf(b.categoryName)
+    )
+    .map((c) => ({
+      id: c._id,
+      name: c.categoryName,
+      img: c.categoryImage
+        ? imageUrl(c.categoryImage)
+        : CAT_FALLBACK.find((x) => x.name === c.categoryName)?.img,
+    }));
   return (
     <>
       <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
@@ -103,14 +135,19 @@ export default function Home() {
         <div className="container">
           <div className="section-head">
             <h2>Shop By Category</h2>
-            <p>Where heritage artistry meets modern elegance, crafted to reflect your unique style.</p>
+            <p>Discover premium saree inskirts crafted for every fabric, occasion, and silhouette.</p>
           </div>
           <div className="cat-grid">
             {catTiles.map((c, i) => (
-              <Link to={`/shop?search=${encodeURIComponent(c.name)}`} className="cat-tile" key={i}>
+              <Link
+                to={`/shop?category=${encodeURIComponent(c.name)}`}
+                className="cat-tile"
+                key={i}
+              >
                 <div className="cat-arch-frame">
                   <div className="cat-arch-inner">
-                    <img src={c.img || CAT_FALLBACK[i % CAT_FALLBACK.length].img} alt={c.name} />
+                    {/* <img src={c.img || CAT_FALLBACK[i % CAT_FALLBACK.length].img} alt={c.name} /> */}
+                    <img src={c.img} alt={c.name} />
                   </div>
                 </div>
                 <span>{c.name}</span>
@@ -135,7 +172,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MOST LOVED */}
+      {/* MOST LOVED 
       <section className="section">
         <div className="container">
           <div className="section-head">
@@ -154,7 +191,7 @@ export default function Home() {
             </p>
           )}
         </div>
-      </section>
+      </section> */}
 
       {/* SPLIT BANNER 2 */}
       <section className="section" style={{ background: "var(--ivory)" }}>
@@ -171,7 +208,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CURRENTLY IN VOGUE */}
+      {/* CURRENTLY IN VOGUE 
       {vogue.length > 0 && (
         <section className="section">
           <div className="container">
@@ -186,6 +223,8 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      */}
 
       {/* TESTIMONIALS */}
       <section className="section" style={{ background: "var(--ivory)" }}>

@@ -17,7 +17,7 @@ export default function AdminCategories() {
   const [editing, setEditing] = useState(null);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [showForm, setShowForm] = useState(false);
   const CATEGORY_PER_PAGE = 5;
 
   const load = () => categoryApi.list().then((r) => setCats(r.data.categories || [])).catch(() => { });
@@ -30,16 +30,21 @@ export default function AdminCategories() {
     setExistingImages([]);
     setNewFiles([]);
     setEditing(null);
+    setShowForm(false);
   };
 
   const startEdit = (category) => {
     setEditing(category._id);
+
     setForm({
       categoryName: category.categoryName || "",
       description: category.description || "",
     });
+
     setExistingImages(category.categoryImages || []);
     setNewFiles([]);
+
+    setShowForm(true);
   };
 
 
@@ -122,7 +127,6 @@ export default function AdminCategories() {
   return (
     <>
       <div className="admin-toolbar">
-
         <h1>Categories</h1>
 
         <input
@@ -135,143 +139,132 @@ export default function AdminCategories() {
           }}
         />
 
+        <button
+          type="button"
+          className="btn btn-gold"
+          onClick={() => {
+            resetForm();
+            setShowForm(true);
+          }}
+        >
+          + ADD CATEGORY
+        </button>
       </div>
+
+
       <div className="admin-cat">
-        <form onSubmit={save} className="order-card">
-          <h3 style={{ fontSize: "1.3rem" }}>{editing ? "Edit Category" : "Add Category"}</h3>
-          <div className="field"><label>Name</label><input required {...f("categoryName")} /></div>
-          <div className="field">
-            <label>Images (Up to 5)</label>
 
-            <label className="upload-btn">
-              + Add Images
-
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                hidden
-                onChange={(e) => {
-                  const files = Array.from(e.target.files);
-
-                  setNewFiles((prev) =>
-                    [...prev, ...files].slice(0, 5)
-                  );
-                }}
-              />
-            </label>
-
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                flexWrap: "wrap",
-                marginTop: 15,
-              }}
+        {showForm && (
+          <div
+            className="modal-backdrop"
+            onMouseDown={(e) => {
+              if (e.target === e.currentTarget) resetForm();
+            }}
+          >
+            <form
+              onSubmit={save}
+              className="category-modal"
+              onMouseDown={(e) => e.stopPropagation()}
             >
-              {existingImages.map((img, index) => (
-                <div
-                  key={`old-${index}`}
-                  style={{
-                    position: "relative",
-                    width: 90,
-                    height: 90,
-                  }}
-                >
-                  <img
-                    src={imageUrl(img)}
-                    alt=""
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: 8,
-                    }}
-                  />
+              <h3>{editing ? "Edit Category" : "Add Category"}</h3>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setExistingImages((prev) =>
-                        prev.filter((_, i) => i !== index)
-                      )
-                    }
-                    style={{
-                      position: "absolute",
-                      top: -8,
-                      right: -8,
-                      width: 22,
-                      height: 22,
-                      borderRadius: "50%",
-                      border: "none",
-                      background: "#dc2626",
-                      color: "#fff",
-                      cursor: "pointer",
-                    }}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
+              <div className="field">
+                <label>Name</label>
+                <input required {...f("categoryName")} />
+              </div>
 
-              {newFiles.map((file, index) => (
-                <div
-                  key={index}
-                  style={{
-                    position: "relative",
-                    width: 90,
-                    height: 90,
-                  }}
-                >
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt=""
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: 8,
-                    }}
-                  />
+              <div className="field">
+                <label>Images (Up to 5)</label>
 
-                  <button
-                    type="button"
-                    onClick={() =>
+                <label className="upload-btn">
+                  + Add Images
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files);
+
                       setNewFiles((prev) =>
-                        prev.filter((_, i) => i !== index)
-                      )
-                    }
-                    style={{
-                      position: "absolute",
-                      top: -8,
-                      right: -8,
-                      width: 22,
-                      height: 22,
-                      borderRadius: "50%",
-                      border: "none",
-                      background: "#dc2626",
-                      color: "#fff",
-                      cursor: "pointer",
+                        [...prev, ...files].slice(
+                          0,
+                          MAX_IMAGES - existingImages.length
+                        )
+                      );
                     }}
-                  >
-                    ×
-                  </button>
+                  />
+                </label>
+
+                <div className="category-image-preview">
+                  {existingImages.map((img, index) => (
+                    <div className="category-preview-item" key={`old-${index}`}>
+                      <img src={imageUrl(img)} alt="" />
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExistingImages((prev) =>
+                            prev.filter((_, i) => i !== index)
+                          )
+                        }
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+
+                  {newFiles.map((file, index) => (
+                    <div className="category-preview-item" key={`new-${index}`}>
+                      <img src={URL.createObjectURL(file)} alt="" />
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setNewFiles((prev) =>
+                            prev.filter((_, i) => i !== index)
+                          )
+                        }
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+
+              <div className="field">
+                <label>Description</label>
+                <textarea
+                  rows="4"
+                  {...f("description")}
+                />
+              </div>
+
+              <div className="category-modal-actions">
+                <button
+                  type="submit"
+                  className="btn btn-gold"
+                  disabled={busy}
+                >
+                  {busy
+                    ? "Saving…"
+                    : editing
+                      ? "Update Category"
+                      : "Add Category"}
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={resetForm}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
-          <div className="field"><label>Description</label><textarea rows="2" {...f("description")} /></div>
-          <div style={{ display: "flex", gap: 10 }}>
-            <button className="btn btn-gold" disabled={busy}>
-              {busy ? "Saving…" : editing ? "Update Category" : "Add Category"}
-            </button>
-            {editing && (
-              <button type="button" className="btn btn-outline" onClick={resetForm}>
-                Cancel
-              </button>
-            )}
-          </div>
-        </form>
+        )}
 
         <table className="admin-table">
           <thead>
@@ -401,7 +394,7 @@ export default function AdminCategories() {
           </button>
 
         </div>
-      </div>
+      </div >
     </>
   );
 }

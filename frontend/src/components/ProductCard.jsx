@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, selectedColor }) {
   const { user } = useAuth();
   const { addToCart, addToWishlist, removeFromWishlist, wishlist } = useCart();
   const toast = useToast();
@@ -15,13 +15,31 @@ export default function ProductCard({ product }) {
   const wishEntry = wishlist.find((w) => w.product?._id === product._id);
   const wished = Boolean(wishEntry);
 
-  const imgs = product.images?.length ? product.images.map(imageUrl) : [];
-  const img = imgs[0] || "https://placehold.co/500x650/efe6d5/3f2317?text=Sharanee";
-  const hover = imgs[1] || img;
+  const selectedVariant = selectedColor
+    ? product.colorVariants?.find(
+      (variant) =>
+        variant.colorName?.toLowerCase() === selectedColor.toLowerCase()
+    )
+    : product.colorVariants?.[0];
 
-  const hasSale = product.discountPrice && product.discountPrice > 0;
-  const shown = hasSale ? product.discountPrice : product.price;
-  const off = hasSale ? Math.round(((product.price - product.discountPrice) / product.price) * 100) : 0;
+  const imgs = selectedVariant?.images?.length
+    ? selectedVariant.images.map(imageUrl)
+    : product.images?.length
+      ? product.images.map(imageUrl)
+      : [];
+
+  const img =
+    imgs[0] ||
+    "https://placehold.co/500x650/efe6d5/3f2317?text=Sharanee";
+
+  const hover = imgs[1] || img;
+  const hasSale = !!product.discount;
+  const shown = product.finalPrice || product.price;
+  const original = product.originalPrice || product.price;
+  const off =
+    product.discount?.discountType === "Percentage"
+      ? product.discount.discountValue
+      : null;
   const oos = product.stockStatus === "Out of Stock";
 
   const requireLogin = () => { toast.info("Please sign in to continue."); navigate("/login"); return false; };
@@ -50,10 +68,23 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <Link to={`/product/${product._id}`} className="pcard">
+    <Link
+      to={
+        selectedColor
+          ? `/product/${product._id}?color=${encodeURIComponent(selectedColor)}`
+          : `/product/${product._id}`
+      }
+      className="pcard"
+    >
       <div className="pcard-media">
         <div className="pcard-tags">
-          {hasSale && <span className="badge badge-sale">{off}% Off</span>}
+          {hasSale && (
+            <span className="badge badge-sale">
+              {product.discount.discountType === "Percentage"
+                ? `${product.discount.discountValue}% OFF`
+                : `₹${product.discount.discountValue} OFF`}
+            </span>
+          )}
           {product.featured && !hasSale && <span className="badge">New</span>}
         </div>
         {oos && <span className="pcard-oos">Sold Out</span>}
@@ -75,8 +106,15 @@ export default function ProductCard({ product }) {
         <span className="pcard-cat">{product.category?.categoryName || product.occasion || "Sharanee"}</span>
         <h3 className="pcard-name">{product.productName}</h3>
         <div className="pcard-price">
-          <span className="price">Rs. {shown?.toLocaleString("en-IN")}</span>
-          {hasSale && <span className="strike">Rs. {product.price?.toLocaleString("en-IN")}</span>}
+          <span className="price">
+            Rs. {shown?.toLocaleString("en-IN")}
+          </span>
+
+          {hasSale && (
+            <span className="strike">
+              Rs. {original?.toLocaleString("en-IN")}
+            </span>
+          )}
         </div>
       </div>
     </Link>

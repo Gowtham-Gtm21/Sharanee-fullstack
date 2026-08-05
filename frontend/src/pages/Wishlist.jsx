@@ -36,7 +36,14 @@ export default function Wishlist() {
               <div key={w._id}>
                 <Link to={`/product/${w.product._id}`} className="pcard">
                   <div className="pcard-media">
-                    <img src={w.product.images?.[0] ? imageUrl(w.product.images[0]) : "https://placehold.co/400x520/efe6d5/3f2317?text=Sharanee"} alt={w.product.productName} />
+                    <img
+                      src={
+                        w.product.colorVariants?.[0]?.images?.[0]
+                          ? imageUrl(w.product.colorVariants[0].images[0])
+                          : "https://placehold.co/400x520/efe6d5/3f2317?text=Sharanee"
+                      }
+                      alt={w.product.productName}
+                    />
                   </div>
                   <div className="pcard-body">
                     <h3 className="pcard-name">{w.product.productName}</h3>
@@ -44,7 +51,7 @@ export default function Wishlist() {
                   </div>
                 </Link>
                 <button className="btn btn-block" style={{ marginTop: 8 }} onClick={() => moveToBag(w.product._id)}>
-                  <Icon.Cart /> Move to Bag
+                  <Icon.Cart /> MOVE TO CART
                 </button>
                 <button className="wish-remove" onClick={() => removeFromWishlist(w._id)}>Remove</button>
               </div>

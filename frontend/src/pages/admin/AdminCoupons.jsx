@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { couponApi } from "../../api/endpoints";
 import { useToast } from "../../context/ToastContext";
 import { Icon } from "../../components/Icons";
+import "../../styles/AdminCoupon.css";
 
 const EMPTY = {
   code: "",
@@ -19,6 +20,8 @@ export default function AdminCoupons() {
   const [form, setForm] = useState(EMPTY);
   const [busy, setBusy] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [open, setOpen] = useState(false);
+
 
   const load = () => couponApi.list().then((r) => setCoupons(r.data.coupons || [])).catch(() => { });
   useEffect(() => { load(); }, []);
@@ -28,10 +31,12 @@ export default function AdminCoupons() {
   const resetForm = () => {
     setForm(EMPTY);
     setEditing(null);
+    setOpen(false);
   };
 
   const startEdit = (coupon) => {
     setEditing(coupon._id);
+
     setForm({
       code: coupon.code || "",
       discountType: coupon.discountType || "Percentage",
@@ -45,8 +50,9 @@ export default function AdminCoupons() {
         : "",
       maxUses: coupon.maxUses ?? 100,
     });
-  };
 
+    setOpen(true);
+  };
   const save = async (e) => {
     e.preventDefault();
     setBusy(true);
@@ -76,155 +82,242 @@ export default function AdminCoupons() {
       toast.error(err.response?.data?.message || "Could not delete coupon.");
     }
   };
+  const toggleCoupon = async (id) => {
+    try {
+      await couponApi.toggle(id);
 
+      toast.success("Coupon status updated.");
+
+      load();
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message ||
+        "Could not update coupon."
+      );
+    }
+  };
   return (
     <>
-      <h1>Coupons</h1>
-      <div className="admin-cat">
-        <form onSubmit={save} className="order-card">
-          <h3 style={{ fontSize: "1.3rem" }}>{editing ? "Edit Coupon" : "Create Coupon"}</h3>
-          <div className="field"><label>Code</label><input required {...f("code")} placeholder="SHARANEE10" style={{ textTransform: "uppercase" }} /></div>
-          <div className="field">
-            <label>Discount Type</label>
-            <select {...f("discountType")}>
 
-              <option>Percentage</option>
+      <div className="admin-page">
 
-              <option>Flat</option>
+        <div className="page-header">
 
-              <option>Free Shipping</option>
+          <h1>Coupons</h1>
 
-            </select>
-          </div>
-          <div className="field"><label>Discount Value</label><input type="number" required {...f("discountValue")} /></div>
-          <div className="field"><label>Minimum Order (Rs.)</label><input type="number" {...f("minimumOrderAmount")} /></div>
-          <div className="field">
-            <label>Start Date</label>
-            <input
-              type="date"
-              required
-              {...f("startDate")}
-            />
-          </div>
-          <div className="field"><label>Expiry Date</label><input type="date" required {...f("expiryDate")} /></div>
-          <div className="field">
-            <label>Maximum Uses</label>
-            <input
-              type="number"
-              min="1"
-              required
-              {...f("maxUses")}
-            />
-          </div>
+          <div className="page-actions">
 
-          <div style={{ display: "flex", gap: 10 }}>
-            <button className="btn btn-gold" disabled={busy}>
-              {busy ? "Saving…" : editing ? "Update Coupon" : "Create Coupon"}
+            <button
+              className="btn btn-gold"
+              onClick={() => {
+                resetForm();
+                setOpen(true);
+              }}
+            >
+              + ADD COUPON
             </button>
-            {editing && (
-              <button type="button" className="btn btn-outline" onClick={resetForm}>
-                Cancel
-              </button>
-            )}
+
           </div>
-        </form>
 
-        <table className="admin-table">
-          <thead>
+        </div>
 
-            <tr>
-              <th>Code</th>
-              <th>Type</th>
-              <th>Value</th>
-              <th>Min Order</th>
-              <th>Start</th>
-              <th>Used</th>
-              <th>Remaining</th>
-              <th>Status</th>
-              <th>Created</th>
-              <th>Expires</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {coupons.map((c) => (
-              <tr
-                key={c._id}
-                className={
-                  c.status === "Expired"
-                    ? "expired-row"
-                    : ""
-                }
-              >
-                <td><b>{c.code}</b></td>
 
-                <td>{c.discountType}</td>
+        {open && (
+          <div
+            className="modal-back"
+            onClick={(e) =>
+              e.target === e.currentTarget && setOpen(false)
+            }
+          >
+            <div className="modal">
 
-                <td>
-                  {
-                    c.discountType === "Percentage"
-                      ? `${c.discountValue}%`
-                      : c.discountType === "Flat"
-                        ? `₹${c.discountValue}`
-                        : "Free"
-                  }
-                </td>
+              <form onSubmit={save} className="order-card">
 
-                <td>₹{c.minimumOrderAmount}</td>
-                <td>
-                  {c.startDate
-                    ? new Date(c.startDate).toLocaleDateString("en-IN")
-                    : "—"}
-                </td>
+                <h2>
+                  {editing ? "Edit" : "Add"} Coupon
+                </h2>
 
-                <td>{c.usedCount || 0}</td>
 
-                <td>{c.remainingCount ?? 0}</td>
+                <div className="field">
+                  <label>Code</label>
+                  <input
+                    required
+                    {...f("code")}
+                    placeholder="SHARANEE10"
+                    style={{ textTransform: "uppercase" }}
+                  />
+                </div>
 
-                <td>
+                <div className="field">
+                  <label>Discount Type</label>
+                  <select {...f("discountType")}>
+                    <option>Percentage</option>
+                    <option>Flat</option>
+                    <option>Free Shipping</option>
+                  </select>
+                </div>
 
-                  <span className={`coupon-status ${c.status?.toLowerCase()}`}>
+                <div className="field">
+                  <label>Discount Value</label>
+                  <input type="number" required {...f("discountValue")} />
+                </div>
 
-                    {c.status || "Scheduled"}
+                <div className="field">
+                  <label>Minimum Order (Rs.)</label>
+                  <input type="number" {...f("minimumOrderAmount")} />
+                </div>
 
-                  </span>
+                <div className="field">
+                  <label>Start Date</label>
+                  <input type="date" required {...f("startDate")} />
+                </div>
 
-                </td>
+                <div className="field">
+                  <label>Expiry Date</label>
+                  <input type="date" required {...f("expiryDate")} />
+                </div>
 
-                <td>
+                <div className="field">
+                  <label>Maximum Uses</label>
+                  <input
+                    type="number"
+                    min="1"
+                    required
+                    {...f("maxUses")}
+                  />
+                </div>
 
-                  {new Date(c.createdAt).toLocaleDateString("en-IN")}
-
-                </td>
-
-                <td>
-
-                  {new Date(c.expiryDate).toLocaleDateString("en-IN")}
-
-                </td>
-                <td style={{ whiteSpace: "nowrap" }}>
+                <div style={{ display: "flex", gap: 10 }}>
                   <button
-                    className="icon-btn"
-                    title="Edit"
-                    aria-label="Edit"
-                    onClick={() => startEdit(c)}
+                    className="btn btn-gold"
+                    disabled={busy}
                   >
-                    <Icon.Edit size={16} />
+                    {busy ? "Saving..." : "Save Coupon"}
                   </button>
+
                   <button
-                    className="icon-btn danger"
-                    title="Delete"
-                    aria-label="Delete"
-                    onClick={() => remove(c._id)}
+                    type="button"
+                    className="btn btn-outline"
+                    onClick={() => setOpen(false)}
                   >
-                    <Icon.Trash size={16} />
+                    Cancel
                   </button>
-                </td>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        )}
+        <div className="table-card">
+
+          <table className="admin-table">
+            <thead>
+
+              <tr>
+                <th>Code</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Min Order</th>
+                <th>Start</th>
+                <th>Used</th>
+                <th>Remaining</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Expires</th>
+                <th>Actions</th>
               </tr>
-            ))}
-            {coupons.length === 0 && <tr><td colSpan="11" style={{ color: "var(--muted)" }}>No coupons yet.</td></tr>}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {coupons.map((c) => (
+                <tr
+                  key={c._id}
+                  className={
+                    c.status === "Expired"
+                      ? "expired-row"
+                      : ""
+                  }
+                >
+                  <td><b>{c.code}</b></td>
+
+                  <td>{c.discountType}</td>
+
+                  <td>
+                    {
+                      c.discountType === "Percentage"
+                        ? `${c.discountValue}%`
+                        : c.discountType === "Flat"
+                          ? `₹${c.discountValue}`
+                          : "Free"
+                    }
+                  </td>
+
+                  <td>₹{c.minimumOrderAmount}</td>
+                  <td>
+                    {c.startDate
+                      ? new Date(c.startDate).toLocaleDateString("en-IN")
+                      : "—"}
+                  </td>
+
+                  <td>{c.usedCount || 0}</td>
+
+                  <td>{c.remainingCount ?? 0}</td>
+
+                  <td>
+
+                    <span
+                      className={`coupon-status ${c.active ? c.status?.toLowerCase() : "expired"
+                        }`}
+                    >
+                      {c.active ? c.status : "Disabled"}
+                    </span>
+
+                  </td>
+
+                  <td>
+
+                    {new Date(c.createdAt).toLocaleDateString("en-IN")}
+
+                  </td>
+
+                  <td>
+
+                    {new Date(c.expiryDate).toLocaleDateString("en-IN")}
+
+                  </td>
+                  <td style={{ whiteSpace: "nowrap" }}>
+
+                    <button
+                      className="icon-btn"
+                      title="Edit"
+                      onClick={() => startEdit(c)}
+                    >
+                      <Icon.Edit size={16} />
+                    </button>
+
+                    <button
+                      className="icon-btn"
+                      title={c.active ? "Disable" : "Enable"}
+                      onClick={() => toggleCoupon(c._id)}
+                    >
+                      {c.active ? "🚫" : "✅"}
+                    </button>
+
+                    <button
+                      className="icon-btn danger"
+                      title="Delete"
+                      onClick={() => remove(c._id)}
+                    >
+                      <Icon.Trash size={16} />
+                    </button>
+
+                  </td>
+                </tr>
+              ))}
+              {coupons.length === 0 && <tr><td colSpan="11" style={{ color: "var(--muted)" }}>No coupons yet.</td></tr>}
+            </tbody>
+          </table>
+
+        </div>
       </div>
     </>
   );

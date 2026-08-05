@@ -235,11 +235,29 @@
 
 .search-panel {
   width: 100%;
-  max-width: 640px;
+  max-width: 850px;
+  /* wider */
   background: var(--ivory);
   box-shadow: var(--shadow);
-  padding: 34px;
+
+  padding: 28px 42px 30px;
+  /* less vertical empty space */
+
   animation: rise 0.25s ease;
+}
+
+.search-panel .search-box {
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 12px 4px;
+
+  border: none;
+  border-bottom: 2px solid var(--cocoa);
 }
 
 @keyframes rise {
@@ -287,7 +305,7 @@
 }
 
 .search-popular {
-  margin-top: 22px;
+  margin-top: 32px;
 }
 
 .search-popular>span {
@@ -716,9 +734,11 @@
 }
 
 .pdp-main {
-  position: relative;
+  width: 100%;
   aspect-ratio: 3/4;
-  background: var(--cream-deep);
+
+  border-radius: 8px;
+
   overflow: hidden;
 }
 
@@ -832,27 +852,40 @@
 .pdp-meta {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding: 18px 0;
-  margin-bottom: 24px;
+
+  padding: 26px 0;
+
+  margin: 28px 0;
+
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 24px;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  column-gap: 50px;
+
+  row-gap: 26px;
 }
 
 .pdp-meta div {
   display: flex;
-  gap: 10px;
-  font-size: 0.9rem;
+  align-items: center;
+  gap: 22px;
 }
 
 .pdp-meta b {
-  min-width: 84px;
+  width: 90px;
+
+  flex-shrink: 0;
+
   color: var(--muted);
-  font-weight: 400;
+
+  font-size: 11px;
+
+  font-weight: 500;
+
+  letter-spacing: 2px;
+
   text-transform: uppercase;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  align-self: center;
 }
 
 .pdp-meta span {
@@ -1453,4 +1486,193 @@
     overflow-x: auto;
     white-space: nowrap;
   }
+}
+
+/* ==============================
+   SEARCH POPUP FINAL DESIGN
+============================== */
+
+/* Popup - wider and shorter */
+.search-overlay .search-panel {
+  width: 90%;
+  max-width: 900px;
+
+  padding: 24px 40px 26px;
+
+  background: var(--ivory);
+  box-sizing: border-box;
+}
+
+/* SEARCH SHARANEE */
+.search-overlay .search-eyebrow {
+  display: block;
+  text-align: center;
+
+  margin-bottom: 18px;
+
+  font-size: 12px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+
+  color: var(--gold);
+}
+
+/* Search input box */
+.search-overlay .search-panel .search-box {
+  width: 100%;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 0 18px;
+
+  background: #ffffff;
+
+  /* removes black line */
+  border: 1px solid #e5c58d !important;
+  border-bottom: 1px solid #e5c58d !important;
+
+  border-radius: 10px;
+
+  outline: none !important;
+  box-shadow: none !important;
+
+  box-sizing: border-box;
+}
+
+/* Search icon */
+.search-overlay .search-box>svg {
+  flex-shrink: 0;
+  color: #b97822;
+}
+
+/* Input */
+.search-overlay .search-box input {
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+
+  border: none !important;
+  border-bottom: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  background: transparent;
+
+  font-size: 16px;
+  color: #4b2816;
+}
+
+/* Remove black line when clicked */
+.search-overlay .search-box:focus-within {
+  border: 1px solid #d3a75f !important;
+  border-bottom: 1px solid #d3a75f !important;
+
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(211, 167, 95, 0.10) !important;
+}
+
+.search-overlay .search-box input:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Popular Searches section */
+.search-overlay .search-popular {
+  margin-top: 24px;
+}
+
+/* POPULAR SEARCHES heading */
+.search-overlay .search-popular>span {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  color: #9b8068;
+}
+
+/* Five equal-width buttons */
+.search-overlay .search-tags {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 12px;
+  margin-top: 0;
+}
+
+/* Equal button size */
+.search-overlay .search-tags button {
+  width: 100%;
+  height: 44px;
+
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f7eddc;
+  border: 1px solid #e5c58d;
+
+  color: #6b4937;
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+/* Hover */
+.search-overlay .search-tags button:hover {
+  background: #f0dfc1;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .search-overlay .search-panel {
+    width: 94%;
+    padding: 22px;
+  }
+
+  .search-overlay .search-tags {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.search-overlay .search-panel {
+  position: relative;
+}
+
+.search-overlay .search-panel .search-x {
+  position: absolute;
+
+  top: 14px;
+  right: 16px;
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: transparent;
+  border: none;
+
+  color: #5b341d;
+
+  cursor: pointer;
+  z-index: 10;
+}
+
+.search-overlay .search-panel .search-x:hover {
+  color: #c48a35;
 }

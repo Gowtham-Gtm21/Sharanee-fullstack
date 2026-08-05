@@ -16,7 +16,11 @@ export default function Footer() {
   };
 
   return (
+
+
     <footer className="footer">
+
+      {/*
       <div className="news">
         <div className="container">
           <h3>Subscribe Our Newsletter</h3>
@@ -33,41 +37,57 @@ export default function Footer() {
             </button>
           </form>
         </div>
-      </div>
+      </div> 
+     */}
 
       <div className="foot-main">
         <div className="container foot-grid">
           <div className="foot-brand">
             <img src="/logo.png" alt="Sharanee" />
             <p>
-              Sharanee crafts timeless saree inskirts and ethnic wear rooted in
-              tradition, tailored for every celebration and every woman.
+              Sharanee crafts timeless saree inskirts,
+              designed for perfect comfort, graceful draping, and a flawless fit for every saree and every occasion.
             </p>
             <div className="contact">
               <div><Icon.Phone /> (307) 555-0133</div>
               <div><Icon.Mail /> designer@sharanee.com</div>
             </div>
             <div className="foot-social">
-              <a href="#" aria-label="Facebook"><Icon.Facebook/></a>
-              <a href="#" aria-label="Twitter"><Icon.X/></a>
-              <a href="#" aria-label="Instagram"><Icon.Instagram/></a>
-              <a href="#" aria-label="YouTube"><Icon.Youtube/></a>
+              <a href="#" aria-label="Facebook"><Icon.Facebook /></a>
+              <a href="#" aria-label="Twitter"><Icon.X /></a>
+              <a href="#" aria-label="Instagram"><Icon.Instagram /></a>
+              <a href="#" aria-label="YouTube"><Icon.Youtube /></a>
             </div>
           </div>
 
           <div className="foot-col">
             <h4>Categories</h4>
-            <Link to="/shop">Saree Inskirt</Link>
-            <Link to="/shop"> Designer Sarees</Link>
-            <Link to="/shop">Fusion Wear</Link>
-            <Link to="/shop">Cotton Sarees</Link>
-            <Link to="/shop">Silk Sarees</Link>
+
+            <Link to="/shop?category=Cotton%20Inskirts">
+              Cotton Inskirt
+            </Link>
+
+            <Link to="/shop?category=Silk%20Inskirts">
+              Silk Inskirt
+            </Link>
+
+            <Link to="/shop?category=Mermaid%20Inskirts">
+              Mermaid Inskirt
+            </Link>
+
+            <Link to="/shop?category=Fish%20Cut%20Inskirts">
+              Fish Cut Inskirt
+            </Link>
+
+            <Link to="/shop?category=Bridal%20Inskirts">
+              Bridal Inskirt
+            </Link>
           </div>
 
           <div className="foot-col">
             <h4>The Company</h4>
-            <Link to="/about">About Us</Link>
-            <Link to="/blog">Blog</Link>
+            {/* <Link to="/about">About Us</Link>
+            <Link to="/blog">Blog</Link> */}
             <a href="#">Press</a>
             <a href="#">Sustainability</a>
             <a href="#">Runways</a>

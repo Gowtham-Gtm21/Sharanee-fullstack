@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Icon } from "./Icons";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { categoryApi } from "../api/endpoints";
+{/* import { categoryApi } from "../api/endpoints"; */ }
 import SearchOverlay from "./SearchOverlay";
 
 export default function Header() {
@@ -12,19 +12,19 @@ export default function Header() {
 
     const [drawer, setDrawer] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
-    const [cats, setCats] = useState([]);
-    const [shopOpen, setShopOpen] = useState(false);
+    {/* const [cats, setCats] = useState([]);
+    const [shopOpen, setShopOpen] = useState(false); */}
     const [acctOpen, setAcctOpen] = useState(false);
 
     const acctRef = useRef(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
+    {/*}  useEffect(() => {
         categoryApi
             .list()
             .then((r) => setCats(r.data.categories || []))
             .catch(() => { });
-    }, []);
+    }, []); */}
 
     // Close account menu on outside click
     useEffect(() => {
@@ -83,12 +83,12 @@ export default function Header() {
                     {[...Array(2)].map((_, k) => (
                         <span key={k} style={{ display: "inline" }}>
                             <span>
-                                Saree Inskirt Crafted for Every Celebration
+                                Perfect Fit for Every Saree
                             </span>
                             <span>
-                                Timeless Designs Rooted in Tradition
+                                Comfort Crafted for Every Occasion
                             </span>
-                            <span>Handcrafted Elegance</span>
+                            <span>Premium Inskirts for Effortless Draping</span>
                         </span>
                     ))}
                 </div>
@@ -110,84 +110,94 @@ export default function Header() {
                             Home
                         </NavLink>
 
-                        <div
-                            className="nav-item"
-                            onMouseEnter={() => setShopOpen(true)}
-                            onMouseLeave={() => setShopOpen(false)}
+                        {/* OLD SHOP DROPDOWN (KEPT FOR FUTURE)
+
+    <div
+        className="nav-item"
+        onMouseEnter={() => setShopOpen(true)}
+        onMouseLeave={() => setShopOpen(false)}
+    >
+        <NavLink to="/shop" className="nav-drop">
+            Shop <Icon.Chevron size={14} />
+        </NavLink>
+
+        {shopOpen && (
+            <div className="mega">
+                <div className="mega-col">
+                    <span className="mega-head">
+                        Categories
+                    </span>
+
+                    <Link to="/shop">
+                        All Products
+                    </Link>
+
+                    {cats.map((c) => (
+                        <Link
+                            key={c._id}
+                            to={`/shop?category=${c._id}`}
                         >
-                            <NavLink to="/shop" className="nav-drop">
-                                Shop <Icon.Chevron size={14} />
-                            </NavLink>
+                            {c.categoryName}
+                        </Link>
+                    ))}
 
-                            {shopOpen && (
-                                <div className="mega">
-                                    <div className="mega-col">
-                                        <span className="mega-head">
-                                            Categories
-                                        </span>
+                    {cats.length === 0 && (
+                        <>
+                            <Link to="/shop?search=Saree">
+                                Saree Inskirt
+                            </Link>
 
-                                        <Link to="/shop">
-                                            All Products
-                                        </Link>
+                            <Link to="/shop?search=Designer-Sarees">
+                                Designer Sarees
+                            </Link>
 
-                                        {cats.map((c) => (
-                                            <Link
-                                                key={c._id}
-                                                to={`/shop?category=${c._id}`}
-                                            >
-                                                {c.categoryName}
-                                            </Link>
-                                        ))}
+                            <Link to="/shop?search=Cotton-Sarees">
+                                Cotton Sarees
+                            </Link>
 
-                                        {cats.length === 0 && (
-                                            <>
-                                                <Link to="/shop?search=Saree">
-                                                    Saree Inskirt
-                                                </Link>
+                            <Link to="/shop?search=Silk-Sarees">
+                                Silk Sarees
+                            </Link>
+                        </>
+                    )}
+                </div>
 
-                                                <Link to="/shop?search=Designer-Sarees">
-                                                    Designer Sarees
-                                                </Link>
+                <div className="mega-col">
+                    <span className="mega-head">
+                        Shop By
+                    </span>
 
-                                                <Link to="/shop?search=Cotton-Sarees">
-                                                    Cotton Sarees
-                                                </Link>
+                    <Link to="/shop?sort=newest">
+                        New Arrivals
+                    </Link>
 
-                                                <Link to="/shop?search=Silk-Sarees">
-                                                    Silk Sarees
-                                                </Link>
-                                            </>
-                                        )}
-                                    </div>
+                    <Link to="/shop?featured=true">
+                        Featured
+                    </Link>
 
-                                    <div className="mega-col">
-                                        <span className="mega-head">
-                                            Shop By
-                                        </span>
+                    <Link to="/shop?sort=low">
+                        Best Value
+                    </Link>
 
-                                        <Link to="/shop?sort=newest">
-                                            New Arrivals
-                                        </Link>
+                    <Link to="/shop">
+                        On Sale
+                    </Link>
+                </div>
+            </div>
+        )}
+    </div>
 
-                                        <Link to="/shop?featured=true">
-                                            Featured
-                                        </Link>
+    END SHOP DROPDOWN */}
 
-                                        <Link to="/shop?sort=low">
-                                            Best Value
-                                        </Link>
+                        <NavLink to="/shop">
+                            Shop
+                        </NavLink>
 
-                                        <Link to="/shop">
-                                            On Sale
-                                        </Link>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                        {/* BLOG & ABOUT REMOVED */}
 
-                        <NavLink to="/blog">Blog</NavLink>
-                        <NavLink to="/about">About</NavLink>
-                        <NavLink to="/contact">Contact</NavLink>
+                        <NavLink to="/contact">
+                            Contact
+                        </NavLink>
 
                         {isAdmin && (
                             <NavLink to="/admin">
@@ -217,11 +227,11 @@ export default function Header() {
                             >
                                 <Icon.Wishlist />
 
-                                {wishlist.length > 0 && (
+                                {/*  {wishlist.length > 0 && (
                                     <span className="icon-count">
                                         {wishlist.length}
                                     </span>
-                                )}
+                                )}  */}
                             </Link>
                         )}
 
@@ -341,136 +351,140 @@ export default function Header() {
                             </Link>
                         )}
                     </div>
-                </div>
-            </header>
+                </div >
+            </header >
 
             {/* Centered search overlay */}
-            {showSearch && (
-                <SearchOverlay
-                    onClose={() => setShowSearch(false)}
-                />
-            )}
+            {
+                showSearch && (
+                    <SearchOverlay
+                        onClose={() => setShowSearch(false)}
+                    />
+                )
+            }
 
             {/* Mobile drawer */}
-            {drawer && (
-                <>
-                    <div
-                        className="drawer-back"
-                        onClick={() => setDrawer(false)}
-                    />
-
-                    <div className="drawer">
-                        <button
-                            className="drawer-close"
+            {
+                drawer && (
+                    <>
+                        <div
+                            className="drawer-back"
                             onClick={() => setDrawer(false)}
-                        >
-                            <Icon.Close />
-                        </button>
+                        />
 
-                        <Link
-                            to="/"
-                            onClick={() => setDrawer(false)}
-                        >
-                            Home
-                        </Link>
+                        <div className="drawer">
+                            <button
+                                className="drawer-close"
+                                onClick={() => setDrawer(false)}
+                            >
+                                <Icon.Close />
+                            </button>
 
-                        <Link
-                            to="/shop"
-                            onClick={() => setDrawer(false)}
-                        >
-                            Shop
-                        </Link>
+                            <Link
+                                to="/"
+                                onClick={() => setDrawer(false)}
+                            >
+                                Home
+                            </Link>
 
-                        <Link
-                            to="/blog"
-                            onClick={() => setDrawer(false)}
-                        >
-                            Blog
-                        </Link>
+                            <Link
+                                to="/shop"
+                                onClick={() => setDrawer(false)}
+                            >
+                                Shop
+                            </Link>
 
-                        <Link
-                            to="/about"
-                            onClick={() => setDrawer(false)}
-                        >
-                            About
-                        </Link>
+                            <Link
+                                to="/blog"
+                                onClick={() => setDrawer(false)}
+                            >
+                                Blog
+                            </Link>
 
-                        <Link
-                            to="/contact"
-                            onClick={() => setDrawer(false)}
-                        >
-                            Contact
-                        </Link>
+                            <Link
+                                to="/about"
+                                onClick={() => setDrawer(false)}
+                            >
+                                About
+                            </Link>
 
-                        {user ? (
-                            <>
-                                <Link
-                                    to="/account"
-                                    onClick={() => setDrawer(false)}
-                                >
-                                    My Account
-                                </Link>
+                            <Link
+                                to="/contact"
+                                onClick={() => setDrawer(false)}
+                            >
+                                Contact
+                            </Link>
 
-                                {/* Customer only */}
-                                {!isAdmin && (
-                                    <>
-                                        <Link
-                                            to="/orders"
-                                            onClick={() => setDrawer(false)}
-                                        >
-                                            My Orders
-                                        </Link>
-
-                                        <Link
-                                            to="/wishlist"
-                                            onClick={() => setDrawer(false)}
-                                        >
-                                            Wishlist
-                                        </Link>
-                                    </>
-                                )}
-
-                                {/* Admin only */}
-                                {isAdmin && (
+                            {user ? (
+                                <>
                                     <Link
-                                        to="/admin"
+                                        to="/account"
                                         onClick={() => setDrawer(false)}
                                     >
-                                        Admin Panel
+                                        My Account
                                     </Link>
-                                )}
 
-                                <a onClick={handleLogout}>
-                                    Logout
-                                </a>
-                            </>
-                        ) : (
-                            <>
-                                <Link
-                                    to="/wishlist"
-                                    onClick={() => setDrawer(false)}
-                                >
-                                    Wishlist
-                                </Link>
+                                    {/* Customer only */}
+                                    {!isAdmin && (
+                                        <>
+                                            <Link
+                                                to="/orders"
+                                                onClick={() => setDrawer(false)}
+                                            >
+                                                My Orders
+                                            </Link>
 
-                                <Link
-                                    to="/login"
-                                    onClick={() => setDrawer(false)}
-                                >
-                                    Sign In
-                                </Link>
+                                            <Link
+                                                to="/wishlist"
+                                                onClick={() => setDrawer(false)}
+                                            >
+                                                Wishlist
+                                            </Link>
+                                        </>
+                                    )}
 
-                                <Link
-                                    to="/register"
-                                    onClick={() => setDrawer(false)}
-                                >
-                                    Create Account
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                </>
-            )}
+                                    {/* Admin only */}
+                                    {isAdmin && (
+                                        <Link
+                                            to="/admin"
+                                            onClick={() => setDrawer(false)}
+                                        >
+                                            Admin Panel
+                                        </Link>
+                                    )}
+
+                                    <a onClick={handleLogout}>
+                                        Logout
+                                    </a>
+                                </>
+                            ) : (
+                                <>
+                                    <Link
+                                        to="/wishlist"
+                                        onClick={() => setDrawer(false)}
+                                    >
+                                        Wishlist
+                                    </Link>
+
+                                    <Link
+                                        to="/login"
+                                        onClick={() => setDrawer(false)}
+                                    >
+                                        Sign In
+                                    </Link>
+
+                                    <Link
+                                        to="/register"
+                                        onClick={() => setDrawer(false)}
+                                    >
+                                        Create Account
+                                    </Link>
+                                </>
+                            )}
+                        </div>
+                    </>
+                )
+            }
         </>
     );
 }

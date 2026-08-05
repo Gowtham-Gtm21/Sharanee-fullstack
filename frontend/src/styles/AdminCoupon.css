@@ -1,0 +1,30 @@
+/* ===== Coupons Page Header ===== */
+
+.admin-page{
+    width:100%;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.page-actions{
+    display:flex;
+    gap:15px;
+}
+
+.table-card{
+    width:100%;
+    background:#fff;
+    border-radius:20px;
+    overflow-x:auto;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.admin-table{
+    width:100%;
+    min-width:1200px;
+}

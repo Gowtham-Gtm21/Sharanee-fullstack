@@ -6,12 +6,19 @@ const {
   applyCoupon,
   updateCoupon,
   removeCoupon,
+  toggleCouponStatus,
 } = require("../controllers/couponController");
 const { protect, admin } = require("../middleware/auth");
 
 router.post("/", protect, admin, createCoupon);
 router.get("/", protect, admin, listCoupons);
 router.post("/apply", protect, applyCoupon);
+router.put(
+  "/toggle/:id",
+  protect,
+  admin,
+  toggleCouponStatus
+);
 router.put("/:id", protect, admin, updateCoupon);
 router.delete("/:id", protect, admin, removeCoupon);
 

@@ -9,7 +9,7 @@ export default function Login() {
   const toast = useToast();
   const navigate = useNavigate();
   const loc = useLocation();
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -18,7 +18,7 @@ export default function Login() {
     e.preventDefault();
     setBusy(true);
     try {
-      const u = await login(email, password);
+      const u = await login(identifier, password);
       toast.success(`Welcome back, ${u.fullName.split(" ")[0]}.`);
       navigate(u.role === "admin" ? "/admin" : (loc.state?.from || "/"), { replace: true });
     } catch (err) {
@@ -46,9 +46,20 @@ export default function Login() {
           <p className="auth-sub">Enter your details to continue</p>
           <form onSubmit={submit} autoComplete="on" name="login">
             <div className="field">
-              <label htmlFor="login-email">Email</label>
-              <input id="login-email" name="email" type="email" autoComplete="email"
-                value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" />
+              <label htmlFor="login-identifier">
+                Email or Phone Number
+              </label>
+
+              <input
+                id="login-identifier"
+                name="identifier"
+                type="text"
+                autoComplete="username"
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
+                required
+                placeholder="Email or phone number"
+              />
             </div>
             <div className="field">
               <label htmlFor="login-password">Password</label>

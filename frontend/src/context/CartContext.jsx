@@ -30,10 +30,24 @@ export function CartProvider({ children }) {
     refreshWishlist();
   }, [refreshCart, refreshWishlist]);
 
-  const addToCart = async (productId, qty = 1) => {
-    await cartApi.add(user.id, productId, qty);
+  const addToCart = async (
+    productId,
+    qty = 1,
+    selectedColor = null,
+    selectedSize = null
+  ) => {
+    await cartApi.add(
+      user.id,
+      productId,
+      qty,
+      selectedColor,
+      selectedSize
+    );
+
     await refreshCart();
   };
+
+
   const updateQty = async (id, qty) => {
     await cartApi.updateQty(id, qty);
     await refreshCart();
@@ -56,7 +70,9 @@ export function CartProvider({ children }) {
   const cartTotal = cart.reduce((sum, i) => {
     const p = i.product;
     if (!p) return sum;
-    const price = p.discountPrice && p.discountPrice > 0 ? p.discountPrice : p.price;
+
+    const price = p.finalPrice || p.price;
+
     return sum + price * i.quantity;
   }, 0);
 

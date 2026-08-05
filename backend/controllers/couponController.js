@@ -33,6 +33,28 @@ const createCoupon = asyncHandler(async (req, res) => {
 // @route  GET /api/coupons  (admin)
 const listCoupons = asyncHandler(async (req, res) => {
   const coupons = await Coupon.find().sort({ createdAt: -1 });
+
+  const today = new Date();
+
+  for (const coupon of coupons) {
+    let status = "Scheduled";
+
+    if (today >= coupon.startDate && today <= coupon.expiryDate) {
+      status = "Active";
+    } else if (today > coupon.expiryDate) {
+      status = "Expired";
+    }
+
+    if (coupon.status !== status) {
+      coupon.status = status;
+      coupon.remainingCount = Math.max(
+        coupon.maxUses - coupon.usedCount,
+        0
+      );
+      await coupon.save();
+    }
+  }
+
   res.json({ coupons });
 });
 
@@ -114,14 +136,7 @@ const applyCoupon = asyncHandler(async (req, res) => {
 
   }
 
-  coupon.usedCount += 1;
 
-  coupon.remainingCount = Math.max(
-    coupon.maxUses - coupon.usedCount,
-    0
-  );
-
-  await coupon.save();
 
   res.json({
     coupon,
@@ -177,10 +192,32 @@ const removeCoupon = asyncHandler(async (req, res) => {
   res.json({ message: "Coupon deleted successfully" });
 });
 
+
+const toggleCouponStatus = asyncHandler(async (req, res) => {
+  const coupon = await Coupon.findById(req.params.id);
+
+  if (!coupon) {
+    return res.status(404).json({
+      message: "Coupon not found",
+    });
+  }
+
+  coupon.active = !coupon.active;
+
+  await coupon.save();
+
+  res.json({
+    success: true,
+    coupon,
+  });
+});
+
+
 module.exports = {
   createCoupon,
   listCoupons,
   applyCoupon,
   updateCoupon,
   removeCoupon,
+  toggleCouponStatus,
 };

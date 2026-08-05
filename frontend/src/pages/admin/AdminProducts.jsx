@@ -3,7 +3,7 @@ import { productApi, categoryApi } from "../../api/endpoints";
 import { imageUrl } from "../../api/client";
 import { useToast } from "../../context/ToastContext";
 import { Icon } from "../../components/Icons";
-
+import { COLOR_OPTIONS } from "../../constants/colors";
 const OCCASION_OPTIONS = [
   "Daily Wear",
   "Casual",
@@ -58,13 +58,20 @@ const EMPTY = {
   discountPrice: "",
   stock: "",
   fabric: "",
-  color: "",
   occasion: "",
   pattern: "",
   size: [],
   featured: false,
-};
 
+  colorVariants: [
+    {
+      colorName: "",
+      colorCode: "",
+      images: [],
+      sizes: [],
+    },
+  ],
+};
 const MAX_IMAGES = 5;
 
 export default function AdminProducts() {
@@ -130,6 +137,74 @@ export default function AdminProducts() {
     });
   };
 
+  const addColorVariant = () => {
+    if (form.colorVariants.length >= 5) {
+      toast.error("Maximum 5 color variants only allowed.");
+      return;
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      colorVariants: [
+        ...prev.colorVariants,
+        {
+          colorName: "",
+          colorCode: "",
+          images: [],
+          sizes: [],
+        },
+      ],
+    }));
+  };
+
+  const removeColorVariant = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      colorVariants: prev.colorVariants.filter(
+        (_, i) => i !== index
+      ),
+    }));
+  };
+
+  const updateColorVariant = (
+    index,
+    field,
+    value
+  ) => {
+    setForm((prev) => {
+      const updated = [...prev.colorVariants];
+
+      updated[index][field] = value;
+
+      return {
+        ...prev,
+        colorVariants: updated,
+      };
+    });
+  };
+  const toggleVariantSize = (colorIndex, size) => {
+    setForm((prev) => {
+      const updated = prev.colorVariants.map((variant, index) => {
+        if (index !== colorIndex) return variant;
+
+        const currentSizes = Array.isArray(variant.sizes)
+          ? variant.sizes
+          : [];
+
+        return {
+          ...variant,
+          sizes: currentSizes.includes(size)
+            ? currentSizes.filter((s) => s !== size)
+            : [...currentSizes, size],
+        };
+      });
+
+      return {
+        ...prev,
+        colorVariants: updated,
+      };
+    });
+  };
   const openNew = () => {
     setForm(EMPTY);
     setEditing(null);
@@ -147,7 +222,6 @@ export default function AdminProducts() {
       discountPrice: product.discountPrice ?? "",
       stock: product.stock ?? "",
       fabric: product.fabric || "",
-      color: product.color || "",
       occasion: product.occasion || "",
       pattern: product.pattern || "",
       size: Array.isArray(product.size)
@@ -156,6 +230,23 @@ export default function AdminProducts() {
           ? [product.size]
           : [],
       featured: Boolean(product.featured),
+
+      colorVariants:
+        product.colorVariants?.length > 0
+          ? product.colorVariants.map((variant) => ({
+            colorName: variant.colorName || "",
+            colorCode: variant.colorCode || "#000000",
+            images: variant.images || [],
+            sizes: Array.isArray(variant.sizes) ? variant.sizes : [],
+          }))
+          : [
+            {
+              colorName: "",
+              colorCode: "",
+              images: [],
+              sizes: [],
+            },
+          ],
     });
 
     setEditing(product._id);
@@ -194,14 +285,12 @@ export default function AdminProducts() {
 
   const save = async (event) => {
     event.preventDefault();
+    const hasImages = form.colorVariants.some(
+      (variant) => variant.images && variant.images.length > 0
+    );
 
-    if (totalImageCount === 0) {
-      toast.error("Please add at least one product image.");
-      return;
-    }
-
-    if (totalImageCount > MAX_IMAGES) {
-      toast.error(`Maximum ${MAX_IMAGES} images only allowed.`);
+    if (!hasImages) {
+      toast.error("Please upload at least one image for a color variant.");
       return;
     }
 
@@ -216,20 +305,55 @@ export default function AdminProducts() {
       const formData = new FormData();
 
       Object.entries(form).forEach(([key, value]) => {
+
         if (key === "size") {
           value.forEach((s) => formData.append("size", s));
-        } else {
+        }
+
+        else if (key === "colorVariants") {
+          formData.append(
+            "colorVariants",
+            JSON.stringify(
+              value.map((v) => ({
+                colorName: v.colorName,
+                colorCode: v.colorCode,
+                sizes: v.sizes || [],
+              }))
+            )
+          );
+        } else if (key === "colorVariants") {
+          formData.append(
+            "colorVariants",
+            JSON.stringify(
+              value.map((v) => ({
+                colorName: v.colorName,
+                colorCode: v.colorCode,
+                sizes: v.sizes || [],
+              }))
+            )
+          );
+        }
+        else {
           formData.append(key, value);
         }
+
       });
+
+      form.colorVariants.forEach((variant, index) => {
+        variant.images.forEach((file) => {
+          formData.append(`colorImages_${index}`, file);
+        });
+      });
+
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
 
       if (editing) {
         formData.append("existingImages", JSON.stringify(existingImages));
       }
 
-      newFiles.forEach((file) => {
-        formData.append("images", file);
-      });
+
 
       if (editing) {
         await productApi.update(editing, formData);
@@ -329,7 +453,7 @@ export default function AdminProducts() {
         <div className="product-toolbar products-toolbar">
           <div className="search-box">
 
-            <Icon.Search size={18} className="search-icon" />
+
 
             <input
               type="text"
@@ -420,8 +544,8 @@ export default function AdminProducts() {
               <td>
                 <img
                   src={
-                    product.images?.[0]
-                      ? imageUrl(product.images[0])
+                    product.colorVariants?.[0]?.images?.[0]
+                      ? imageUrl(product.colorVariants[0].images[0])
                       : "https://placehold.co/44x56/efe6d5/3f2317?text=S"
                   }
                   alt={product.productName || "Product"}
@@ -627,11 +751,201 @@ export default function AdminProducts() {
                 </div>
               </div>
 
+
+              <h3 className="section-title">Color Variants</h3>
+
+              <div className="color-variants-wrapper">
+
+                {form.colorVariants.map((variant, index) => (
+
+                  <div className="color-card" key={index}>
+                    <h4 className="color-card-title">
+                      Color Variant {index + 1}
+                    </h4>
+
+
+                    <div className="field">
+                      <label>Color Name</label>
+
+                      <select
+                        value={variant.colorName}
+                        onChange={(e) => {
+                          const selected = COLOR_OPTIONS.find(
+                            (c) => c.name === e.target.value
+                          );
+
+                          updateColorVariant(index, "colorName", selected.name);
+                          updateColorVariant(index, "colorCode", selected.code);
+                        }}
+                      >
+                        <option value="">Select Color</option>
+
+                        {COLOR_OPTIONS.map((color) => (
+                          <option
+                            key={color.name}
+                            value={color.name}
+                          >
+                            {color.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="field">
+                      <label>
+                        Available Sizes for {variant.colorName || `Color ${index + 1}`}
+                      </label>
+
+                      <div className="size-check-grid">
+                        {SIZE_OPTIONS.map((size) => (
+                          <label
+                            className="size-check"
+                            key={`${index}-${size}`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={(variant.sizes || []).includes(size)}
+                              onChange={() => toggleVariantSize(index, size)}
+                            />
+                            {size}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="field">
+                      <label>Upload Images (Maximum 5)</label>
+
+                      <label className="upload-box">
+
+                        <Icon.Plus size={28} />
+
+                        <span>Click to Upload Images</span>
+
+                        <small>Maximum 5 images</small>
+
+                        <input
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          hidden
+                          onChange={(e) => {
+                            const files = Array.from(e.target.files || []);
+
+                            const updated = [...form.colorVariants];
+
+                            const currentImages = updated[index].images || [];
+
+                            const mergedImages = [...currentImages, ...files];
+
+                            if (mergedImages.length > 5) {
+                              toast.error("You can upload up to 5 images for this color.");
+                              e.target.value = "";
+                              return;
+                            }
+
+                            updated[index] = {
+                              ...updated[index],
+                              images: mergedImages,
+                            };
+
+                            setForm((prev) => ({
+                              ...prev,
+                              colorVariants: updated,
+                            }));
+
+                            e.target.value = "";
+
+                            setForm((prev) => ({
+                              ...prev,
+                              colorVariants: updated,
+                            }));
+
+                            e.target.value = "";
+                          }}
+                        />
+
+                      </label>
+                    </div>
+
+                    {variant.images?.length > 0 && (
+                      <div className="image-manager">
+                        {variant.images.map((img, imageIndex) => {
+                          const isFile = img instanceof File;
+
+                          return (
+                            <div
+                              className="image-thumb"
+                              key={`${index}-${imageIndex}`}
+                            >
+                              <img
+                                src={
+                                  isFile
+                                    ? URL.createObjectURL(img)
+                                    : imageUrl(img)
+                                }
+                                alt={`${variant.colorName} ${imageIndex + 1}`}
+                              />
+
+                              <button
+                                type="button"
+                                title="Remove image"
+                                aria-label="Remove color image"
+                                onClick={() => {
+                                  const updated = [...form.colorVariants];
+
+                                  updated[index] = {
+                                    ...updated[index],
+                                    images: updated[index].images.filter(
+                                      (_, i) => i !== imageIndex
+                                    ),
+                                  };
+
+                                  setForm((prev) => ({
+                                    ...prev,
+                                    colorVariants: updated,
+                                  }));
+                                }}
+                              >
+                                <Icon.Close size={12} />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => removeColorVariant(index)}
+                    >
+                      Remove Color
+                    </button> */}
+                    <button
+                      type="button"
+                      className="remove-color-btn"
+                      onClick={() => removeColorVariant(index)}
+                    >
+                      <Icon.Trash size={16} />
+                      Remove Color
+                    </button>
+
+                  </div>
+
+                ))}
+
+                <button
+                  type="button"
+                  className="btn btn-outline add-color-btn"
+                  onClick={addColorVariant}
+                >
+                  + Add Color
+                </button>
+
+              </div>
+
               <div className="form-2col">
-                <div className="field">
-                  <label>Color</label>
-                  <input {...f("color")} />
-                </div>
 
                 <div className="field">
                   <label>Pattern</label>
@@ -646,6 +960,7 @@ export default function AdminProducts() {
                     ))}
                   </select>
                 </div>
+
               </div>
 
               <div className="field">
@@ -665,68 +980,8 @@ export default function AdminProducts() {
                 </div>
               </div>
 
-              <div className="field">
-                <label className="size-check" style={{ display: "inline-flex" }}>
-                  <input
-                    type="checkbox"
-                    checked={form.featured}
-                    onChange={(e) => setForm({ ...form, featured: e.target.checked })}
-                  />
-                  Featured (show in "Most Loved Styles" on the home page)
-                </label>
-              </div>
 
-              <div className="field">
-                <label>Images (up to {MAX_IMAGES})</label>
 
-                <div className="image-manager">
-                  {existingImages.map((image) => (
-                    <div className="image-thumb" key={image}>
-                      <img src={imageUrl(image)} alt="Product" />
-                      <button
-                        type="button"
-                        title="Remove image"
-                        aria-label="Remove image"
-                        onClick={() => removeExistingImage(image)}
-                      >
-                        <Icon.Close size={12} />
-                      </button>
-                    </div>
-                  ))}
-
-                  {newFiles.map((file, index) => (
-                    <div className="image-thumb" key={`${file.name}-${index}`}>
-                      <img src={URL.createObjectURL(file)} alt="New upload" />
-                      <button
-                        type="button"
-                        title="Remove image"
-                        aria-label="Remove image"
-                        onClick={() => removeNewFile(index)}
-                      >
-                        <Icon.Close size={12} />
-                      </button>
-                    </div>
-                  ))}
-
-                  {totalImageCount < MAX_IMAGES && (
-                    <label className="image-add">
-                      <Icon.Plus size={20} />
-                      Add
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        style={{ display: "none" }}
-                        onChange={addImages}
-                      />
-                    </label>
-                  )}
-                </div>
-
-                <small style={{ color: "var(--muted)" }}>
-                  Click the × on an image to remove it, or "Add" to upload more.
-                </small>
-              </div>
 
               <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
                 <button

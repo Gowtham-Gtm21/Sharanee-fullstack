@@ -93,6 +93,35 @@ const productSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    colorVariants: [
+      {
+        colorName: {
+          type: String,
+          required: true,
+        },
+
+        colorCode: {
+          type: String,
+          default: "#000000",
+        },
+
+        images: [
+          {
+            type: String,
+          },
+        ],
+
+        sizes: [
+          {
+            type: String,
+            enum: {
+              values: SIZE_OPTIONS,
+              message: "{VALUE} is not a valid size",
+            },
+          },
+        ],
+      },
+    ],
 
     fabric: {
       type: String,

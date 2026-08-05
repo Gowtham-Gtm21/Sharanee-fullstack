@@ -36,19 +36,35 @@ const register = asyncHandler(async (req, res) => {
 });
 
 // @route  POST /api/auth/login
+// Login using Email OR Phone + Password
 const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
+  const { identifier, password } = req.body;
+
+  if (!identifier || !password) {
+    return res.status(400).json({
+      message: "Email or phone number and password are required",
+    });
   }
 
-  const user = await User.findOne({ email: email.toLowerCase() }).select("+password");
+  const value = identifier.trim();
+
+  // Check whether identifier matches email OR phone
+  const user = await User.findOne({
+    $or: [
+      { email: value.toLowerCase() },
+      { phone: value },
+    ],
+  }).select("+password");
+
   if (!user || !(await user.matchPassword(password))) {
-    return res.status(401).json({ message: "Invalid email or password" });
+    return res.status(401).json({
+      message: "Invalid email/phone or password",
+    });
   }
 
   res.json({
     token: generateToken(user._id),
+
     user: {
       id: user._id,
       fullName: user.fullName,

@@ -221,7 +221,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="dash-2col">
-        <div>
+        <div className="recent-orders-box">
           <h2 style={{ fontSize: "1.4rem" }}>Recent Orders</h2>
           <table className="admin-table">
             <thead>
@@ -246,7 +246,7 @@ export default function AdminDashboard() {
           </table>
         </div>
 
-        <div>
+        <div className="new-customers-box">
           <h2 style={{ fontSize: "1.4rem" }}>New Customers</h2>
           <table className="admin-table">
             <thead>
